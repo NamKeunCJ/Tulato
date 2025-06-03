@@ -1,0 +1,109 @@
+{% block head %} {% include 'layouts/head.html' %} {% endblock %}
+<body class="body-login">
+    <header id="main-hader">
+        <div class="imagen-center">
+          <img src="../../static/images/autenticacion_registro/fondo-logo.svg" class="fondo-logo-login" alt="Logo fondo">
+          <img src="../../static/images/logo.svg" class="logo-login" alt="Logo nav">
+        </div>
+    
+        {% block navbar %} {% include 'layouts/navbar.html' %} {% endblock %}
+    </header>
+    <section id="section1-login" >
+        <div class="container-fluid vh-100 " style="margin-bottom: 1rem;">
+            <div class="row">
+                <div class="col offset-md-7">
+                    <div class="card card_registro shadow p-5" style="border-radius: 5rem;margin-top: 6rem;">
+                        <h4 class="text-start fw-bold mb-3 mt-3">Crea tu cuenta</h4>
+                        <form id="register-form" method="POST" action="/autenticacion_registro/registro">
+                          <div class="mb-3">
+                            <label for="email" class="form-label">Correo electrónico <b style="color:red">*</b></label>
+                            <input type="email" class="form-control" id="email" name="email" maxlength="100" placeholder="Ingresa tu correo" required>
+                          </div>
+                        
+                          <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre de usuario <b style="color:red">*</b></label>
+                            <input type="text" class="form-control" id="nombre" name="nombre"  maxlength="50" placeholder="Ingresa tu primer nombre" required>
+                          </div>
+
+                          <div class="mb-3">
+                            <label for="apellido" class="form-label">Apellido de usuario <b style="color:red">*</b></label>
+                            <input type="text" class="form-control" id="apellido" name="apellido" maxlength="50" placeholder="Ingresa tu primer apellido" required>
+                          </div>
+                        
+                          <div class="mb-3">
+                            <label for="password" class="form-label">Contraseña <b style="color:red">*</b></label>
+                            <input type="password" class="form-control" id="password" name="password" minlength="8" maxlength="15" placeholder="Ingresa tu contraseña" required>
+                          </div>
+                        
+                          <div class="row mb-3">
+                            <div class="col-md-4 text-md-end text-start">
+                              <label for="genero" class="form-label">Género <b style="color:red">*</b></label>
+                            </div>
+                            <div class="col-md-8">
+                              <select class="form-select" id="genero" name="genero" required>
+                                <option value="" selected disabled>Seleccione una opción</option>
+                                {% for genero in genero %}
+                                  <option value="{{genero[0]}}">{{genero[1]}}</option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+                        
+                          <div class="row mb-3">
+                            <div class="col-md-4 text-md-end text-start">
+                              <label for="edad" class="form-label">Edad <b style="color:red">*</b></label>
+                            </div>
+                            <div class="col-md-8">
+                              <input type="number" class="form-control" id="edad" name="edad" min="10" max="100" placeholder="Ingresa tu edad" required>
+                            </div>
+                          </div>
+                        
+                          <div class="row mb-3">
+                            <div class="col-md-4 text-md-end text-start">
+                              <label for="discapacidad" class="form-label">Discapacidad</label>
+                            </div>
+                            <div class="col-md-8">
+                              <input type="text" class="form-control" id="discapacidad" name="discapacidad" maxlength="100" placeholder="Especifica si aplica">
+                            </div>
+                          </div>
+                        
+                          <div class="row mb-3">
+                            <div class="col-md-4 text-md-end text-start">
+                              <label for="grupo_etnico" class="form-label">Grupo étnico <b style="color:red">*</b></label>
+                            </div>
+                            <div class="col-md-8">
+                              <select class="form-select" id="grupo_etnico" name="grupo_etnico" required>
+                                <option value="" selected disabled>Seleccione una opción</option>
+                                {% for grupo in grupo %}
+                                  <option value="{{grupo[0]}}">{{grupo[1]}}</option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+                          
+                          
+                          <!-- hCaptcha -->
+                          <div class="mb-3">
+                            <div class="h-captcha" style="transform: scale(0.80);transform-origin: 0 0;" data-sitekey="1c52a558-28e4-4efa-a63a-1120f09ae17e"></div>
+                          </div>
+                          <div id="registerContainer" style="margin-top:2rem"></div>
+                        
+                          <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn_submit">Registrarse</button>
+                          </div>
+                        
+                          <p class="text-center text-muted mb-0 pie-login">
+                            Al crear una cuenta, usted acepta los <a href="#">Términos de servicio</a> y la <a href="#">Política de privacidad</a>.
+                          </p>
+                          <p class="text-center text-muted mt-2">
+                            ¿Ya tienes una cuenta? <a href="/autenticacion_registro/inicio_sesion">Inicia sesión aquí.</a>
+                          </p>
+                        </form>
+                        
+                    </div>                      
+                </div>
+            </div>
+        </div>
+    </section>
+    {% block enlaces %} {% include 'layouts/enlaces.html' %} {% endblock %}
+</body>

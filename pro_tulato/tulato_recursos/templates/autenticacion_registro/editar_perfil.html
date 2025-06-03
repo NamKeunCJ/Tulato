@@ -1,0 +1,97 @@
+{% block head %} {% include 'layouts/head.html' %} {% endblock %}
+<body class="body-formulario2">
+    <header id="main-hader">
+        <div class="imagen-center">
+          <img src="../../static/images/borde-inferior.svg" class="fondo-logo-formulario2" alt="Logo fondo">
+          <img src="../../static/images/hojas.svg" class="logo-formulario2" alt="Logo nav">
+        </div>
+    
+        {% block navbar %} {% include 'layouts/navbar.html' %} {% endblock %}
+    </header>
+    <section id="section1-formulario2" >
+      <div class="container mt-5">
+        <div class="row justify-content-center">
+          <div class="col-12">
+            <div class="card shadow p-4 p-md-5 rounded-5 mx-auto card-formulario2" style="margin-top: 3rem;">
+              <h4 class="text-center fw-bold mb-4">Editar tu perfil</h4>
+              <form id="perfil-form" method="POST" action="/autenticacion_registro/edit_perfil">
+                <div class="row g-3">
+                  <div class="col-12 col-md-6 col-lg-3">
+                    <label for="rol" class="form-label">Rol</label>
+                    <input type="rol" class="form-control" id="rol" name="rol" value="{{user[3]}}" disabled>
+                  </div>
+                  <div class="col-12 col-md-6 col-lg-3">
+                    <label for="nombre" class="form-label">Nombre de usuario</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" maxlength="50" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" value="{{user[1]}}" required>
+                  </div>
+                  <div class="col-12 col-md-6 col-lg-3">
+                    <label for="apellido" class="form-label">Apellido de usuario</label>
+                    <input type="text" class="form-control" id="apellido" name="apellido" maxlength="50" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+" value="{{user[2]}}" required>
+                  </div>
+                  <div class="col-12 col-md-6 col-lg-3">
+                    <label for="email" class="form-label">Correo electrónico</label>
+                    <input type="email" class="form-control" id="email" name="email" value="{{user[4]}}" disabled>
+                  </div>
+                </div>
+
+                <div class="row g-3 mt-2">
+                  <div class="col-12 col-md-6">
+                    <label for="password" class="form-label">Nueva contraseña <span class="text-muted">(opcional)</span></label>
+                    <input type="password" class="form-control" id="password" name="password" minlength="8" maxlength="15" placeholder="Dejar en blanco para mantener la actual">
+                    <div class="form-text">Deja este campo vacío si no deseas cambiar tu contraseña.</div>
+                  </div>
+
+                  <div class="col-12 col-md-3">
+                    <div class="mb-2">
+                      <label for="genero" class="form-label">Género</label>
+                      <select class="form-select" id="genero" name="genero" required>
+                        <option value="{{user[9]}}" selected hidden>{{user[6]}}</option>
+                        {% for genero in genero %}
+                          <option value="{{genero[0]}}">{{genero[1]}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="mb-2">
+                      <label for="edad" class="form-label">Edad</label>
+                      <input type="number" class="form-control" id="edad" name="edad" min="0" max="100" value="{{user[5]}}" required>
+                    </div>
+                  </div>
+
+                  <div class="col-12 col-md-3">
+                    <div class="mb-2">
+                      <label for="discapacidad" class="form-label">Discapacidad</label>
+                      <input type="text" class="form-control" id="discapacidad" name="discapacidad" maxlength="100" value="{{user[7]}}">
+                    </div>
+                    <div class="mb-2">
+                      <label for="grupo_etnico" class="form-label">Grupo étnico</label>
+                      <select class="form-select" id="grupo_etnico" name="grupo_etnico" required>
+                        <option value="{{user[10]}}" selected hidden>{{user[8]}}</option>
+                        {% for grupo in grupo %}
+                          <option value="{{grupo[0]}}">{{grupo[1]}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row justify-content-center mt-4">
+                  <div class="col-auto text-center">
+                    <div class="mb-3">
+                      <div class="h-captcha" style="transform: scale(0.80); transform-origin: 0 0;" data-sitekey="1c52a558-28e4-4efa-a63a-1120f09ae17e"></div>
+                    </div>
+
+                    <div id="perfilContainer" class="mb-3"></div>
+
+                    <div class="d-grid">
+                      <button type="submit" class="btn btn_submit mx-auto" style="width: 15rem;">Actualizar</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% block enlaces %} {% include 'layouts/enlaces.html' %} {% endblock %}
+</body>

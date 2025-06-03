@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="uuid-13c9a927-39ac-4c2c-943f-ddd610679495" data-name="Capa 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21.15999 14.84365">
+  <g id="uuid-d7997517-43f8-41f0-8cea-b15994c926e3" data-name="Capa 1">
+    <g>
+      <rect x="5.32785" y=".5" width="15.33214" height="3.40714" rx="1.70357" ry="1.70357" fill="none" stroke="#093f24" stroke-miterlimit="10"/>
+      <rect x=".5" y=".5" width="3.40714" height="3.40714" rx="1.70357" ry="1.70357" transform="translate(4.40714 4.40714) rotate(-180)" fill="none" stroke="#093f24" stroke-miterlimit="10"/>
+      <rect x="5.32785" y="5.77149" width="15.33214" height="3.40714" rx="1.70357" ry="1.70357" fill="none" stroke="#093f24" stroke-miterlimit="10"/>
+      <rect x=".5" y="5.77149" width="3.40714" height="3.40714" rx="1.70357" ry="1.70357" transform="translate(4.40714 14.95012) rotate(-180)" fill="none" stroke="#093f24" stroke-miterlimit="10"/>
+      <rect x="5.32785" y="10.93651" width="15.33214" height="3.40714" rx="1.70357" ry="1.70357" fill="none" stroke="#093f24" stroke-miterlimit="10"/>
+      <rect x=".5" y="10.93651" width="3.40714" height="3.40714" rx="1.70357" ry="1.70357" transform="translate(4.40714 25.28016) rotate(180)" fill="none" stroke="#093f24" stroke-miterlimit="10"/>
+    </g>
+  </g>
+</svg>

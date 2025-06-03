@@ -1,0 +1,24 @@
+
+{% block head %} {% include 'layouts/head.html' %} {% endblock %}
+<body class="body-inicio body-inicio-mapa">
+    <header id="main-hader">
+        <div>
+        <img src="../static/images/fondo_logo.svg" class="logo_inicial_map" alt="Logo fondo">
+        <a href="/index">
+        <img src="../static/images/logo.svg" class="logo_nav_inicial_map" alt="Logo nav"></a>
+        </div>
+
+        {% block navbar %} {% include 'layouts/navbar.html' %} {% endblock %}
+    </header>
+    <section class="fondo_section_1 fondo_proyectos_nav">
+        <div class="white-gradient-map"></div>
+        <div class="image-container" style="height: 20rem;">           
+        <div class="white-gradient"></div>      
+        </div>
+    </section>  
+    {% block contenido %} {% include 'mapa_interactivo/contenido.html' %} {% endblock %}  
+       
+    {% block footer %} {% include 'layouts/footer.html' %} {% endblock %}
+    {% block enlaces %} {% include 'layouts/enlaces.html' %} {% endblock %}
+</body>
+</html>

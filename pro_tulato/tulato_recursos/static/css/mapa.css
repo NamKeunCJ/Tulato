@@ -1,0 +1,247 @@
+.body-inicio-mapa::before {
+    content: "";
+    position: absolute;
+    top: 120%;
+    right: -200px;
+    transform: translateY(-50%);
+    width: 500px;
+    height: 500px;
+    background-image: url('../images/logo_solo.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: 0;
+}
+/* LOGOS */
+.logo_inicial_map,
+.logo_nav_inicial_map {
+    position: absolute;
+    pointer-events: none;
+    width: 100%;
+    height: auto;
+    top: 0;
+    left: 0;
+    z-index: 5;
+}
+
+.logo_inicial_map {
+    max-width: 40rem;
+}
+
+.logo_nav_inicial_map {
+    max-width: 7rem;
+    top: 2rem;
+    left: 9rem;
+}
+
+/* Fondo mapa */
+.fondo_nav_mapa {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+/* Mapa */
+.responsive-mapa {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.responsive-mapa iframe {
+    width: 100%;
+    height: 100vh;
+    border: 0;
+    display: block;
+}
+
+/* Degradado */
+.white-gradient-map {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to bottom, white, rgba(255, 255, 255, 0));
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Estilos del NAV MAPA */
+.nav-mapa-wrapper {
+    position: absolute;
+    top: 3.5rem;
+    right: 2.3rem;
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    z-index: 10;
+}
+
+.contenedor-titulo-nav-map {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    z-index: 11;
+}
+
+.container-nav-mapa {
+    padding: 0.5rem;
+    width: 19rem;
+    max-width: 90vw;
+    background: white;
+    border-radius: 2rem;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.palabra-nav-map {
+    font-family: 'CaustenRound-Bold', sans-serif;
+    background-color: #0d4d3b;
+    font-size: 2rem;
+    line-height: 1;
+    color: #fff;
+    display: inline-block;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.icono-nav-map {
+    font-family: 'CaustenRound-Bold', sans-serif;
+    font-size: 5rem;
+    color: #0d4d3b;
+    line-height: 1;
+    margin-left: 0.5rem;
+    position: relative;
+    top: 0.2rem;
+}
+
+.boton-mapa {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    padding: 0.5rem 1rem;
+    background-color: #EBAC06;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    font-family: 'Arial', sans-serif;
+    font-size: 1rem;
+    transition: opacity 0.3s ease;
+    z-index: 4;
+}
+.titulo_absolute_modal{
+    position: absolute;
+    left: 1rem;
+    top: 1.3rem;
+    background: #fff;
+    border-radius: 5rem;
+    width: 25rem;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.8rem;
+    z-index: 1;
+}
+
+.tulachito_absolute_modal{
+    position: absolute;
+    left: 58rem;
+    top: 24rem;
+    border-radius: 5rem;
+    width: 20rem;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.8rem;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.titulo_informacion_determinante{
+    position: relative;
+    left: 1rem;
+    top: 1.3rem;
+    background: #EBAC06;
+    border-radius: 5rem;
+    width: 30rem;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-size: 1.5rem;
+    z-index: 1;
+}
+
+/* Fondo del segundo section*/
+.fondo_informacion_card {
+    background: url('../../static/images/hojas.svg') no-repeat center/cover;
+    position: relative;
+}
+
+.fondo_informacion_card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.927); /* Antes 0.85 → ahora 0.5 */
+    z-index: 3;
+}
+
+.fondo_informacion_card * {
+    position: relative;
+    z-index: 6;
+}
+
+/* Responsive teléfonos */
+@media (max-width: 912px)  {
+    .logo_inicial_map {
+        max-width: 30rem;
+    }
+
+    .logo_nav_inicial_map {
+        width: 20%;
+        top: 1rem;
+        left: 4.5rem;
+    }
+    
+    .container-nav-mapa {
+        left: auto !important;
+        right: 1rem !important;
+        width: auto !important;
+        padding: 0.25rem 0.75rem;
+        height: 2.5rem;
+    }
+
+    .nav-mapa-wrapper {
+        top: 3rem;
+        right: 1rem;
+    }
+
+    .contenedor-titulo-nav-map {
+        display: none; /* Bien si quieres ocultar "TULATO" y el número */
+    }     
+                                                                                                     
+}
+@media (max-width: 1024px)  {
+    .tulachito_absolute_modal{
+        position: absolute;
+        left: 55%;
+        top: 70%;
+        border-radius: 5rem;
+        width: 15rem;
+        padding: 1rem;
+        text-align: center;
+        font-size: 1.8rem;
+        z-index: 1;
+        pointer-events: none;
+    }    
+                                                                                                     
+}

@@ -1,0 +1,116 @@
+{% block head %} {% include 'layouts/head.html' %} {% endblock %}
+<body class="body-formulario2">
+    <header id="main-hader">
+        <div class="imagen-center">
+          <img src="../../static/images/borde-inferior.svg" class="fondo-logo-formulario2" alt="Logo fondo">
+          <img src="../../static/images/hojas.svg" class="logo-formulario2" alt="Logo nav">
+        </div>
+    
+        {% block navbar %} {% include 'layouts/navbar.html' %} {% endblock %}
+    </header>
+    <section id="section1-formulario2">
+      <div class="container mt-5">
+        <div class="row justify-content-center">
+          <div class="col-12">
+            <div class="card shadow p-4 p-md-5 rounded-5 mx-auto card-formulario2" style="margin-top: 3rem;">
+              <h4 class="text-center fw-bold mb-4">Agregar Información</h4>
+              <form id="informacion-form" method="POST" action="/gestion_informacion/agregar_informacion" enctype="multipart/form-data">
+                <div class="row g-3">
+                  <div class="col-12 col-md-6 col-lg-4">
+                    <label for="titulo" class="form-label">¿Cuál es el título del tema? <b style="color:red">*</b></label>
+                    <input type="text" class="form-control" id="titulo" name="titulo" maxlength="300" required>
+                  </div>
+                  <div class="col-12 col-md-6 col-lg-4">
+                    <label for="coordenadas" class="form-label">¿Dónde se ubica el tema?(Coordenada) <b style="color:red">*</b></label>
+                    <input type="text" class="form-control" id="coordenadas" name="coordenadas" maxlength="100" required>
+                  </div>
+                  <div class="col-12 col-md-6 col-lg-4">
+                    <label for="file" class="custom-file-upload w-100">
+                      <i class="bi bi-folder2"></i> Seleccionar Imagen
+                    </label>
+                    <input type="file" id="file" name="file" accept=".jpg,.jpeg,.png,.svg,.gif">
+                  </div>           
+                </div>
+                <div class="row g-3">
+                  <div class="col-12 col-md-6 col-lg-12">                    
+                    <label for="video" class="form-label">Agregar video de YouTube: </label>
+                    <input type="text" class="form-control placeholder-light" id="video" name="video" placeholder="Ejemplo: (https://youtu.be/1xzJyegVYuw?si=OYCMcMyNXA98skey)">
+                  </div>           
+                </div>
+                <div class="row g-3 mt-2">
+                  <div class="col-12 col-md-8">
+                    <label for="descripcion" class="form-label">
+                      Escribe aquí todo el contenido del Tema <b style="color:red">*</b>
+                    </label>
+                    <div id="editor" style="height: 300px;"></div>
+                    <!-- Input oculto para enviar el contenido como HTML -->
+                    <input type="hidden" name="descripcion" id="descripcion" required>
+                  </div>
+                  <div class="col-12 col-md-4">
+                    <div class="mb-2">
+                      <label for="proyecto" class="form-label">Proyecto <b style="color:red">*</b></label>
+                      <select class="form-select proyecto" id="proyecto" name="proyecto" required>
+                        <option value="" selected disabled>Seleccione una opción</option>
+                        {% for proyecto in proyecto %}
+                          <option value="{{proyecto[0]}}">{{proyecto[1]}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="mb-2">
+                      <label for="municipio" class="form-label">Municipio</label>
+                      <select class="form-select municipio" id="municipio" name="municipio" >
+                        <option value="" selected disabled>Seleccione una opción</option>
+                        {% for municipio in municipio %}
+                          <option value="{{municipio[0]}}">{{municipio[1]}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="mb-2">
+                      <label for="vereda" class="form-label">Vereda</label>
+                      <select class="form-select vereda" id="vereda" name="vereda" >
+                        <option value="" selected disabled>Seleccione una opción</option>
+                        {% for vereda in vereda %}
+                          <option value="{{vereda[2]}}" data-municipio="{{vereda[0]}}">{{vereda[3]}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+
+                    <div class="mb-2">
+                      <label for="determinante" class="form-label">Determinante</label>
+                      <select class="form-select determinante" id="determinante" name="determinante"  disabled>
+                        <option value="" selected disabled>Seleccione una opción</option>
+                        {% for determinante in determinante %}
+                          <option value="{{determinante[0]}}">{{determinante[1]}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+
+                    <div class="mb-2">
+                      <label for="rol" class="form-label">Rol destinatario <b style="color:red">*</b></label>
+                      <select class="form-select" id="rol" name="rol" required>
+                        <option value="" selected disabled>Seleccione una opción</option>
+                        {% for rol in rol %}
+                          {% if rol[0] != 5 %}
+                            <option value="{{rol[0]}}">{{rol[1]}}</option>
+                          {% endif %}
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>                  
+                </div>
+                <div class="row justify-content-center mt-4">
+                  <div class="col-auto text-center">
+                    <div id="informacionContainer" class="mb-3"></div>
+                    <div class="d-grid">
+                      <button type="submit" class="btn btn_submit mx-auto" style="width: 15rem;">Añadir Información</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% block enlaces %} {% include 'layouts/enlaces.html' %} {% endblock %}
+</body>

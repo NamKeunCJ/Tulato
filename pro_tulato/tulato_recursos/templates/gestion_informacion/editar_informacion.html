@@ -1,0 +1,282 @@
+{% block head %} {% include 'layouts/head.html' %} {% endblock %}
+<script>
+    $(function() {
+        $('#tabla').DataTable({
+            "language": {
+                "emptyTable": "No hay datos disponibles en la tabla",
+                "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                "infoEmpty": "Mostrando 0 a 0 de 0 entradas",
+                "infoFiltered": "(filtrado de _MAX_ entradas totales)",
+                "lengthMenu": "Mostrar _MENU_ entradas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "No se encontraron registros coincidentes",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
+        });
+    });
+</script>
+<body class="body-formulario2">
+    <header id="main-hader">
+        <div class="imagen-center">
+          <img src="../../static/images/borde-inferior.svg" class="fondo-logo-formulario2" alt="Logo fondo">
+          <img src="../../static/images/hojas.svg" class="logo-formulario2" alt="Logo nav">
+        </div>
+    
+        {% block navbar %} {% include 'layouts/navbar.html' %} {% endblock %}
+    </header>
+    <section id="section1-formulario2">
+      <div class="container mt-5">
+        <div class="row justify-content-center">
+          <div class="col-12">
+            <div class="card shadow p-4 p-md-5 rounded-5 mx-auto card-formulario2" style="margin-top: 3rem;">
+                <h4 class="text-center fw-bold mb-4">Lista de Temas</h4>                
+                <div class="table-responsive">
+                    <table id="tabla" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Fecha: </th>
+                                <th>Titulo: </th>
+                                <th>Proyecto: </th>
+                                <th>Receptor: </th>
+                                <th>Creador: </th>
+                                <th>Estado: </th>
+                                <th> - </th>
+                                <th> - </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {%for info in edit_info%}
+                            <tr>
+                                <td>{{info[1]}}</td>
+                                <td>{{info[2]}}</td>
+                                <td>{{info[3]}}</td>
+                                <td>{{info[7]}}</td>
+                                <td>{{info[8]}}</td>
+                                <td>{% if info[9]==true %} Visible {% else %} No Disponible {% endif %}</td>
+                                <td><button type="button" style="color: #0a3e2f;" id="edit{{info[0]}}" class="btn icon" data-bs-toggle="modal" data-bs-target="#editar_info_{{info[0]}}"><i class="bi bi-pencil-square"></i></button></td>
+                                <td><button type="button" style="color: #0a3e2f;" id="delete{{info[0]}}" class="btn icon" data-bs-toggle="modal" data-bs-target="#eliminar_info_{{info[0]}}"><i class="bi bi-trash3-fill"></i></button></td>
+                            </tr>
+                            <div class="modal fade" id="editar_info_{{info[0]}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header" style="background-color: #024522; color: white; border-bottom: 2px solid #EBAC06;">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">¿Desea editar este info?</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: brightness(0) invert(1);"></button>
+                                        </div>
+                                        <form id="editInfo-form_{{info[0]}}" method="POST" action="/gestion_informacion/editar_informacion" enctype="multipart/form-data">
+                                            <div class="modal-body">
+                                                <div class="row g-3">
+                                                    <input type="hidden" name="id_info" value="{{ info[0] }}">
+                                                    <div class="col-12">
+                                                        <label for="titulo" class="form-label">Titulo</label>
+                                                        <input type="text" class="form-control" id="titulo" name="titulo" maxlength="300" value="{{info[2]}}" required>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <label for="coordenadas" class="form-label">Coordenadas</label>
+                                                        <input type="text" class="form-control" id="coordenadas" name="coordenadas" maxlength="100" value="{{info[10]}}" required>
+                                                    </div>
+                                                    <div class="col-6 d-flex align-items-center justify-content-center">
+                                                        <label for="file_{{ info[0] }}" class="custom-file-upload w-100">
+                                                            <i class="bi bi-folder2"></i> Seleccionar Imagen
+                                                        </label>
+                                                        <input type="file" id="file_{{ info[0] }}" name="file" accept=".jpg,.jpeg,.png,.svg,.gif" class="d-none">
+                                                    </div>
+
+ 
+                                                    <div class="col-6 d-flex align-items-center justify-content-center">
+                                                        {% if info[11] is not none %}
+                                                            <img src="../../{{ info[11] }}" 
+                                                                alt="Elemento gráfico proporcionado" 
+                                                                class="img-fluid rounded-4 shadow w-100 border border-3 border-light">
+                                                        {% else %}
+                                                            <div class="alert alert-warning text-center w-100 rounded-4 p-3">
+                                                                ⚠️ No hay ningún elemento gráfico disponible para mostrar.
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+       
+                                                    <div class="col-12">                    
+                                                        <label for="video" class="form-label">Agregar video de YouTube: </label>
+                                                        <input type="text" class="form-control placeholder-light" id="video" name="video" {% if info[12] %} value="{{info[12]}}"{% else %} placeholder="Aún no se ha agregado un video de YouTube"{% endif %}>
+                                                    </div>           
+                                                    <div class="col-12">
+                                                        <label for="descripcion_{{ info[0] }}" class="form-label">
+                                                            Actualizar contenido:
+                                                        </label>
+                                                        
+                                                        <div id="actualizador_{{ info[0] }}" style="height: 300px;"></div>
+                                                        <input type="hidden" name="descripcion" id="descripcion_{{ info[0] }}" required>
+                                                    </div>
+
+                                                    <script>
+                                                        document.addEventListener('DOMContentLoaded', function () {
+                                                            const quill = new Quill('#actualizador_{{ info[0] }}', {
+                                                            theme: 'snow'
+                                                            });
+
+                                                            const contenido = `{{ info[13]|safe }}`;
+                                                            quill.root.innerHTML = contenido;
+                                                            document.querySelector('#descripcion_{{ info[0] }}').value = contenido;
+
+                                                            document.querySelector('#editar_info_{{ info[0] }} form').addEventListener('submit', function () {
+                                                            document.querySelector('#descripcion_{{ info[0] }}').value = quill.root.innerHTML;
+                                                            });
+                                                        });
+                                                    </script>
+                                                    <div class="col-12">
+                                                        <div class="mb-2">
+                                                            <label for="proyecto" class="form-label">Proyecto: </label>
+                                                            <select class="form-select" id="proyecto_{{ info[0] }}" name="proyecto" required>
+                                                                {% if info[3] %}
+                                                                    <option value="{{info[14]}}" selected hidden>{{info[3]}}</option>
+                                                                {% else %}
+                                                                    <option value="" selected disabled>Seleccione una opción</option>
+                                                                {% endif %}
+                                                                {% for proyecto in proyecto %}
+                                                                <option value="{{proyecto[0]}}">{{proyecto[1]}}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <label for="municipio" class="form-label">Municipio: </label>
+                                                            <select class="form-select" id="municipio_{{ info[0] }}" name="municipio" >
+                                                                {% if info[4] %}
+                                                                    <option value="{{info[15]}}" selected hidden>{{info[4]}}</option>
+                                                                {% else %}
+                                                                    <option value="" selected disabled>Seleccione una opción</option>
+                                                                {% endif %}
+                                                                {% for municipio in municipio %}
+                                                                <option value="{{municipio[0]}}">{{municipio[1]}}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-2">
+                                                            <label for="vereda" class="form-label">Vereda: </label>
+                                                            <select class="form-select" id="vereda_{{ info[0] }}" name="vereda" >
+                                                                {% if info[5] %}
+                                                                    <option value="{{info[16]}}" selected hidden>{{info[5]}}</option>
+                                                                {% else %}
+                                                                    <option value="" selected disabled>Seleccione una opción</option>
+                                                                {% endif %}
+                                                                {% for vereda in vereda %}
+                                                                <option value="{{vereda[2]}}" data-municipio="{{vereda[0]}}">{{vereda[3]}}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="mb-2">
+                                                            <label for="determinante" class="form-label">Determinante: </label>
+                                                            <select class="form-select" id="determinante_{{ info[0] }}" name="determinante">
+                                                                {% if info[6] %}
+                                                                    <option value="{{info[17]}}" selected hidden>{{info[6]}}</option>
+                                                                {% else %}
+                                                                    <option value="" selected disabled>Seleccione una opción</option>
+                                                                {% endif %}
+                                                                {% for determinante in determinante %}
+                                                                <option value="{{determinante[0]}}">{{determinante[1]}}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                        <script>
+                                                            //filtros informacion
+                                                            document.addEventListener('DOMContentLoaded', function () {
+                                                                const proyectoSelect = document.querySelector('#proyecto_{{ info[0] }}');
+                                                                const municipioSelect = document.querySelector('#municipio_{{ info[0] }}');
+                                                                const veredaSelect = document.querySelector('#vereda_{{ info[0] }}');
+                                                                const determinanteSelect = document.querySelector('#determinante_{{ info[0] }}');
+
+
+                                                                // Oculta todas las veredas al cargar
+                                                                Array.from(veredaSelect.options).forEach(opt => opt.hidden = true);
+
+                                                                function toggleUbicacionFields() {
+                                                                    const selectedProyecto = proyectoSelect.value;
+                                                                    const enable = selectedProyecto === '4';
+
+                                                                    municipioSelect.disabled = !enable;
+                                                                    veredaSelect.disabled = !enable;
+                                                                    determinanteSelect.disabled = !enable;
+
+                                                                    if (!enable) {
+                                                                    municipioSelect.selectedIndex = 0;
+                                                                    veredaSelect.selectedIndex = 0;
+                                                                    determinanteSelect.selectedIndex = 0;
+                                                                    }
+                                                                }
+
+                                                                proyectoSelect.addEventListener('change', toggleUbicacionFields);
+                                                                toggleUbicacionFields(); // Llamada inicial
+
+                                                                municipioSelect.addEventListener('change', () => {
+                                                                    const muni = municipioSelect.value;
+                                                                    veredaSelect.selectedIndex = 0;
+
+                                                                    Array.from(veredaSelect.options).forEach(opt => {
+                                                                    if (!opt.value) {
+                                                                        opt.hidden = false;
+                                                                        return;
+                                                                    }
+                                                                    opt.hidden = opt.dataset.municipio !== muni;
+                                                                    });
+
+                                                                    // Al cambiar municipio, también forzamos deshabilitar determinante
+                                                                    determinanteSelect.disabled = true;
+                                                                    determinanteSelect.selectedIndex = 0;
+                                                                });
+
+                                                                veredaSelect.addEventListener('change', function () {
+                                                                    if (veredaSelect.value) {
+                                                                    determinanteSelect.disabled = false;
+                                                                    } else {
+                                                                    determinanteSelect.disabled = true;
+                                                                    determinanteSelect.selectedIndex = 0;
+                                                                    }
+                                                                });
+                                                            });
+
+                                                        </script>
+                                                        <div class="mb-2">
+                                                            <label for="rol" class="form-label">Rol destinatario: </label>
+                                                            <select class="form-select" id="rol" name="rol" required>
+                                                                <option value="{{info[18]}}" selected hidden>{{info[7]}}</option>
+                                                                {% for rol in rol %}
+                                                                {% if rol[0] != 5 %}
+                                                                    <option value="{{rol[0]}}">{{rol[1]}}</option>
+                                                                {% endif %}
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>                  
+                                                </div>
+                                                <div class="row justify-content-center mt-4">
+                                                    <div class="col-auto text-center">
+                                                        <div id="editInfoContainer_{{info[0]}}" class="mb-3"></div>
+                                                        <div class="d-grid">
+                                                            <button type="submit" class="btn btn_submit mx-auto" style="width: 15rem;">Actualizar Información</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {%endfor%}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% block enlaces %} {% include 'layouts/enlaces.html' %} {% endblock %}
+</body>

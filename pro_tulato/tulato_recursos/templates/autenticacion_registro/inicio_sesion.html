@@ -1,0 +1,52 @@
+{% block head %} {% include 'layouts/head.html' %} {% endblock %}
+<body class="body-login">
+    <header id="main-hader">
+        <div class="imagen-center">
+          <img src="../../static/images/autenticacion_registro/fondo-logo.svg" class="fondo-logo-login" alt="Logo fondo">
+          <img src="../../static/images/logo.svg" class="logo-login" alt="Logo nav">
+        </div>
+    
+        {% block navbar %} {% include 'layouts/navbar.html' %} {% endblock %}
+    </header>
+    <section id="section1-login" >
+        <div class="container-fluid vh-100 " style="margin-bottom: 1rem;">
+            <div class="row">
+                <div class="col offset-md-7">
+                    <div class="card card-formulario1 shadow p-5" style="border-radius: 5rem;margin-top: 6rem;">
+                        <h4 class="text-start fw-bold mb-3 mt-3">iniciar sesión</h4>
+                        <p class="text-start text-muted">
+                          Inicie sesión ingresando su dirección de correo electrónico y contraseña.
+                        </p>
+                        <form id="login-form" method="POST" action="/autenticacion_registro/inicio_sesion">
+                          <div class="mb-3">
+                            <label for="email_usu" class="form-label">Correo electrónico</label>
+                            <input type="email" class="form-control" id="email_usu" name="email_usu" placeholder="Ingresa tu correo">
+                          </div>
+                          <div class="mb-3">
+                            <label for="password_usu" class="form-label">Contraseña</label>
+                            <div class="input-group">
+                              <input type="password" class="form-control" id="password_usu" name="password_usu" placeholder="Ingresa tu contraseña">
+                              <button class="btn btn-outline-success" type="button" id="togglePassword">
+                                <i class="bi bi-eye" id="toggleIcon"></i>
+                              </button>
+                            </div>
+                          </div>                          
+                          <div class="mb-3 text-start">
+                            <a href="/autenticacion_registro/recuperar_password" class="text-decoration-none">¿Olvidó su contraseña?</a>
+                          </div>
+                          <!-- Contenedor de Alerta -->
+                          <div id="alertContainer" class="text-center mt-3"></div>
+                          <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn_submit">iniciar sesión</button>
+                          </div>
+                          <p class="text-center text-muted mb-0 pie-login">
+                            ¿No tienes cuenta? <a href="/autenticacion_registro/registro">Regístrate aquí.</a>
+                          </p>
+                        </form>
+                    </div>                      
+                </div>
+            </div>
+        </div>
+    </section>
+    {% block enlaces %} {% include 'layouts/enlaces.html' %} {% endblock %}
+</body>

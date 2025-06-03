@@ -1,0 +1,412 @@
+/*========================================
+=            IMPORTACIÓN DE FUENTES       =
+=========================================*/
+@font-face {
+    font-family: 'CaustenRound-Bold';
+    src: url('../fonts/CaustenRound-Bold.otf') format('opentype');
+}
+@font-face {
+    font-family: 'CaustenRound-Regular';
+    src: url('../fonts/CaustenRound-Regular.otf') format('opentype');
+}
+@font-face {
+    font-family: 'CaustenRound-Medium';
+    src: url('../fonts/CaustenRound-Medium.otf') format('opentype');
+}
+
+/*========================================
+=            ESTILOS GENERALES            =
+=========================================*/
+html, body {
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+.header {
+  position: relative;
+  z-index: 5;
+}
+
+body.body-inicio {
+    position: relative;
+}
+
+.body-inicio::before {
+    content: "";
+    position: absolute;
+    top: 70vh;
+    right: -200px;
+    transform: translateY(-20%);
+    width: 500px;
+    height: 500px;
+    background-image: url('../images/logo_solo.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.navbar{
+    position: absolute; top: 0; left: 0; z-index: 3;
+}
+.logo_inicial,
+.logo_nav_inicial {
+    position: absolute;
+    pointer-events: none;
+    width: 100%;
+    height: auto;
+    top: 0;
+    left: 0;
+    z-index: 4;
+}
+
+.logo_inicial {
+    max-width: 50rem;
+}
+
+.logo_nav_inicial {
+    max-width: 10rem;
+    top: 2rem;
+    left: 10rem;
+}
+/* Fondo del primer section*/
+.fondo_section_1 {
+    background: url('../images/Recurso1.png') no-repeat top/cover;
+    position: relative;
+}
+
+.fondo_section_1::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.fondo_section_1 * {
+    position: relative;
+    z-index: 1;
+    color: rgb(0, 0, 0); /* Asegura que el texto se mantenga claro */
+}
+/* Fondo del primer section*/
+.fondo_proyectos_nav {
+    background: url('../images/Recurso1.png') no-repeat center/cover;
+    position: relative;
+    min-height: 300px; /* Ajusta esta altura según lo que necesites */
+}
+
+
+/* Fondo del segundo section*/
+.fondo_section_2 {
+    background: url('../images/Recurso2.png') no-repeat center/cover;
+    position: relative;
+}
+
+.fondo_section_2::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.fondo_section_2 * {
+    position: relative;
+    z-index: 3;
+    color: rgb(0, 0, 0); /* Asegura que el texto se mantenga claro */
+}
+
+.oculto {
+    visibility: hidden;
+}
+
+/* Tipografías */
+.title-login, h1, h2, h3, h4, h5, h6 {
+    font-family: 'CaustenRound-Regular';
+}
+
+p {
+    font-family: 'CaustenRound-Medium';
+}
+.text-tulato-titulo{
+    color:#063F23
+}
+/*========================================
+=            ESTILOS DE COMPONENTES       =
+=========================================*/
+.title {
+    position: relative;
+    z-index: 4;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* NAV-LINK */
+.icono-color {
+    margin-top: 0.5rem;
+    width: 25px;
+    height: 25px;
+    background-color: #063F23;
+}
+
+.nav-link:hover .icono-color {
+    background-color: #EBAC06;
+}
+
+a {
+    color: #063F23;
+}
+
+.nav-link:hover small,
+a:hover {
+    color: #EBAC06;
+}
+
+/* Botones */
+.btn_submit {
+    background-color: #024522;
+    color: #fff;
+}
+
+.btn_submit:hover {
+    background-color: #EBAC06;
+    color: #000;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background-color: #EBAC06;
+    color: #fff;
+}
+
+/* Timeline */
+.timeline {
+    position: relative;
+    padding-left: 40.5px;
+    width: 15rem;
+    border-left: 3px solid #0d4d3b;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -47px;
+    top: 5px;
+    width: 10px;
+    height: 10px;
+    background-color: white;
+    border: 3px solid #0d4d3b;
+    border-radius: 50%;
+    z-index: 5;
+}
+
+.timeline-number {
+    position: absolute;
+    left: -35px;
+    top: -15px;
+    font-size: 2rem;
+    color: white;
+    font-weight: bold;
+}
+
+.timeline-link {
+    background-color: #0d4d3b;
+    color: white;
+    padding: 3px 10px;
+    text-decoration: none;
+    border-radius: 3px;
+    font-weight: bold;
+    display: block;
+    width: 19rem;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.timeline-link:hover {
+    background-color: #0a3e2f;
+    color: #fff;
+}
+
+/* Degradado blanco */
+.white-gradient {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 300px;
+    background: linear-gradient(to top, white, rgba(255, 255, 255, 0));
+    pointer-events: none;
+    z-index: 0;
+}
+
+.image-container {
+    position: relative;
+    width: 100%;
+    height: 650px;
+    overflow: hidden;
+}
+
+#tabla thead th {
+    color:#fff;
+    font-weight: bold;
+    background-color: #0a3e2f;
+    border-bottom: 2px solid #EBAC06;
+}
+
+
+@media (max-width: 767px) {
+    .logo_inicial {
+        max-width: 30rem;
+    }
+    .logo_nav_inicial {
+        width: 20%;
+        top: 1rem;
+        left: 4.5rem;
+    }
+    .logo_inicial,
+    .logo_nav_inicial{
+        z-index: 4;
+        pointer-events: none;
+    }
+    .navbar{
+         z-index:10;
+    }
+    #navbarContent {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: white;
+        border-radius: 1rem;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 1rem;
+        width: 300px;
+        z-index: 5;
+    }
+    .container-nav {
+        position: relative;
+        left: 8rem;
+        width: 4.5rem;
+        text-align: center;
+    }
+    #navbarContent.collapse {
+        transition: opacity 1s ease, transform 1s ease;
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    #navbarContent.collapsing {
+        height: auto !important;
+        transition: none;
+    }
+    #navbarContent.collapse.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .text-grap-sm{
+        white-space: normal; word-break: break-word;
+    }
+
+    .title {
+        padding-bottom: 0.3rem;
+    }
+    .title img {
+        width: 90%;
+        max-width: 20rem;
+        height: auto;
+    }
+    .timeline {
+        display: none;
+    }
+    #contactos .col-md-8 {
+        padding-left: 0 !important;
+    }
+    .image-container {
+        height: 300px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .logo_inicial {
+        max-width: 30rem;
+    }
+    .logo_nav_inicial {
+        width: 13%;
+        top: 1rem;
+        left: 4.5rem;
+    }
+    .logo_inicial,
+    .logo_nav_inicial{
+        z-index: 4;
+        pointer-events: none;
+    }
+    .navbar{
+        z-index:10;
+    }
+    #navbarContent {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: white;
+        border-radius: 1rem;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 1rem;
+        width: 300px;
+        z-index: 5;
+    }
+    .container-nav {
+        position: relative;
+        left: 19rem;
+        width: 4.5rem;
+        text-align: center;
+    }
+    #navbarContent.collapse {
+        transition: opacity 1s ease, transform 1s ease;
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    #navbarContent.collapsing {
+        height: auto !important;
+        transition: none;
+    }
+    #navbarContent.collapse.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .text-grap-sm{
+        white-space: normal; word-break: break-word;
+    }
+    .timeline {
+        display: none;
+    }
+    #contactos .col-md-8 {
+        padding-left: 0 !important;
+    }
+    .image-container {
+        height: 450px;
+    }
+}
+
+@media (min-width: 912px) and (max-width: 1024px) {
+    .logo_inicial {
+        max-width: 30rem;
+    }
+    .logo_nav_inicial {
+        width: 10%;
+        top: 1rem;
+        left: 4.5rem;
+    }
+    .timeline {
+        display: none;
+    }
+    #contactos .col-md-8 {
+        padding-left: 15rem !important;
+    }
+}
+
+

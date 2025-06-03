@@ -1,0 +1,75 @@
+
+{% block head %} {% include 'layouts/head.html' %} {% endblock %}
+<body class="body-inicio">
+  <header id="header">
+    <div>
+      <img src="../static/images/fondo_logo.svg" class="logo_inicial" alt="Logo fondo">
+      <a href="/index">
+      <img src="../static/images/logo.svg" class="logo_nav_inicial" alt="Logo nav"></a>
+    </div>
+    {% block navbar %} {% include 'layouts/navbar.html' %} {% endblock %}
+  </header>
+  <section class="fondo_section_1">
+    <div class="image-container">      
+      <div class="container my-5" style="padding-top: 15rem;padding-left: 17rem;">
+          <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-number">1</div>
+                <a href="/mapa_interactivo/tulato_inicio" class="timeline-link">Apropiación tecnológica territorial</a>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-number">2</div>
+                <a href="#proyecto1" class="timeline-link">Operación con Baterías Reutilizadas</a>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-number">3</div>
+                <a href="#proyecto2" class="timeline-link">Bote de Electromovilidad</a>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-number">4</div>
+                <a href="#proyecto3" class="timeline-link">Estación de Recarga Híbrida</a>
+            </div>
+          </div>
+      </div>
+      <div class="white-gradient"></div>      
+    </div>
+  </section>
+  <section id="nosotros" class="fondo_section_2">
+    <!-- Texto centrado al final del gradiente -->
+    <div class="title">
+      <img src="../static/images/title.png" style="width: 35rem;">
+    </div>
+    <div class="container">      
+      <div class="row align-items-center">
+        <!-- Imagen Recurso3 -->
+        <div class="col-12 col-md-7 d-flex justify-content-center justify-content-md-end mb-3 mb-md-0">
+          <img class="img-fluid" src="../static/images/Recurso3.png" style="max-width: 100%; height: auto;" alt="Recurso3">
+        </div>      
+        <!-- Texto al lado de la imagen -->
+        <div class="col-12 col-md-5 d-flex flex-column justify-content-center" style="text-align: justify;">
+          <p><b>
+            Esta plataforma web está diseñada para la
+            recolección, análisis y visualización interactiva de
+            información clave sobre un territorio específico. A
+            través de mapas dinámicos con filtros avanzados y
+            visualizaciones gráficas intuitivas, permite
+            representar información de manera clara, accesible
+            y comprensible, facilitando la interpretación del
+            impacto social, económico y ambiental en la zona de
+            estudio.<br><br>
+            Concebida como un espacio para el aprendizaje y la
+            investigación, Tulato permite que futuras
+            indagaciones accedan a datos clave de manera
+            eficiente. Gracias a su integración de mapas
+            interactivos y visualizaciones gráficas, optimiza el
+            análisis espacial y fortalece la gestión del
+            conocimiento en el contexto del desarrollo territorial.
+          </b></p>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% block footer %} {% include 'layouts/footer.html' %} {% endblock %}
+  {% block enlaces %} {% include 'layouts/enlaces.html' %} {% endblock %}
+</body>
+</html>

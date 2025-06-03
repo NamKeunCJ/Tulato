@@ -1,0 +1,82 @@
+/* ==== BASE STYLES ==== */
+.body-formulario2 {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden scroll;
+}
+.body-formulario2::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -150px;
+    transform: translateY(-50%);
+    width: 600px;
+    height: 600px;
+    background: url('../images/logo_solo.svg') center/contain no-repeat;
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.fondo-logo-formulario2 {
+  position: fixed; /* Mejor que absolute para mantenerla fija al fondo en scroll */
+  pointer-events: none;
+  width: 100vw;
+  height: 100vh; /* O ajusta según el contenido */
+  top: 0;
+  left: 0;
+  z-index: -9999; /* Asegura que esté detrás de todo */
+  object-fit: cover;
+}
+.logo-formulario2 {
+    position: absolute;
+    pointer-events: none;
+    width: 100%;
+    max-width: 20rem;
+    top: 0.5rem;
+    left: 5rem;
+    z-index: 2;
+}
+.card-formulario2{
+    max-width: 1000px;
+    margin-bottom: 2rem;
+    background-color: rgba(255, 255, 255, 0.627);
+}
+
+/* Responsive teléfonos */
+@media (max-width: 768px)  {
+    .logo-formulario2 {
+        width: 40%;
+        top:2rem;
+        left: 1rem;        
+        transform: rotate(25grad);
+    }                                                         
+}
+/* Responsive teléfonos */
+@media (min-width: 768px) and (max-width: 912px) {
+    .logo-formulario2 {
+        width: 30%;
+        top:1rem;
+        left: 1rem;        
+        transform: rotate(25grad);
+    }  
+    .card-formulario2{
+        max-width: 700px;
+        left:0rem
+    }                                                       
+}
+
+/* Responsive teléfonos */
+@media (min-width:1024px) and (max-width: 1024px) {
+    .logo-formulario2 {
+        width: 40%;
+        top:0rem;
+        left: 1rem;        
+        transform: rotate(25grad);
+    }  
+    .card-formulario2{
+        max-width: 1000px;
+        left:0rem
+    }                                                       
+}
