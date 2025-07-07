@@ -1,29 +1,34 @@
-.body-inicio-mapa::before {
-    content: "";
-    position: absolute;
-    top: 120%;
-    right: -200px;
-    transform: translateY(-50%);
-    width: 500px;
-    height: 500px;
-    background-image: url('../images/logo_solo.svg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    opacity: 0.1;
-    pointer-events: none;
+.seccion-marca-agua-mapa {
+    position: relative;
+    overflow: hidden; /* 🔥 Esto recorta el desbordamiento de la imagen */
     z-index: 0;
 }
+
+.marca-agua-mapa {
+    position: absolute;
+    top: 0;
+    right: -200px; /* opcional según tu diseño */
+    width: 500px;
+    height: 500px;
+    object-fit: contain;
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: -1;
+}
+
 /* LOGOS */
 .logo_inicial_map,
 .logo_nav_inicial_map {
     position: absolute;
-    pointer-events: none;
     width: 100%;
     height: auto;
     top: 0;
     left: 0;
     z-index: 5;
+}
+
+.logo_inicial_map {
+    pointer-events: none;
 }
 
 .logo_inicial_map {

@@ -1,0 +1,57 @@
+{% block head %} {% include 'layouts/head.html' %} {% endblock %}
+<body class="body-formulario2">
+    <header id="main-hader">
+        <div class="imagen-center">
+          <img src="../../static/images/borde-inferior.svg" class="fondo-logo-formulario2" alt="Logo fondo">
+          <img src="../../static/images/hojas.svg" class="logo-formulario2" alt="Logo nav">
+        </div>
+    
+        {% block navbar %} {% include 'layouts/navbar.html' %} {% endblock %}
+    </header>
+    <section id="section1-formulario2">
+      <div class="container mt-5">
+        <div class="row justify-content-center">
+          <div class="col-12">
+            <div class="card shadow p-4 p-md-5 rounded-5 mx-auto card-formulario2" style="margin-top: 3rem;">
+              <h4 class="text-center fw-bold mb-4">Agregar Test</h4>
+              <form method="POST" action="/evaluacion_aprendizaje/agregar_test" enctype="multipart/form-data" id="test-form">
+                <div class="mb-3">
+                  <label for="nombre" class="form-label">Nombre del Test <b style="color:red">*</b></label>
+                  <input type="text" class="form-control" name="nombre" id="nombre" maxlength="300" required>
+                </div>
+                <div class="mb-2">
+                  <label for="determinante" class="form-label">Determinante Correspondiente <b style="color:red">*</b></label>
+                  <select class="form-select" id="determinante" name="determinante" required>
+                      <option value="" selected disabled>Seleccione una opción</option>                                              
+                      {% for det in determinantes %}
+                      <option value="{{det[0]}}">{{det[1]}}</option>
+                      {% endfor %}
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label for="contexto" class="form-label">¿De qué trata el test? <b style="color:red">*</b></label>
+                  <div id="editor-test" style="height: 250px;"></div>
+                  <input type="hidden" name="contexto" id="contexto" required>
+                </div>
+
+                <div class="preguntas-container mb-3">
+                  <label class="form-label"><b>Preguntas</b></label>
+                  <!-- Las preguntas se generarán por JS evaluacion.js -->
+                </div>
+
+                <button type="button" class="btn btn-outline-success mb-3" id="agregar-pregunta">
+                  <i class="bi bi-plus-circle"></i> Añadir Pregunta
+                </button>
+                <div id="alerta-pregunta" class="mb-3">
+                </div>
+                <div class="d-grid">
+                  <button type="submit" class="btn btn_submit mx-auto" style="width: 15rem;">Guardar Test</button>
+                </div>
+              </form>              
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% block enlaces %} {% include 'layouts/enlaces.html' %} {% endblock %}
+</body>

@@ -36,7 +36,13 @@
         <div class="row justify-content-center">
           <div class="col-12">
             <div class="card shadow p-4 p-md-5 rounded-5 mx-auto card-formulario2" style="margin-top: 3rem;">
-                <h4 class="text-center fw-bold mb-4">Lista de Temas</h4>                
+                <h4 class="text-center fw-bold mb-4">Lista de Temas</h4>  
+                <a href="/gestion_informacion/agregar_informacion"
+                    class="btn btn-agregar-contenido fw-bold shadow-lg d-inline-flex align-items-center gap-2 px-4 py-2 mb-4">
+                    <i class="bi bi-plus-circle-fill"></i> Añade un Tema
+                </a>
+
+             
                 <div class="table-responsive">
                     <table id="tabla" class="table table-hover">
                         <thead>
@@ -67,7 +73,7 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header" style="background-color: #024522; color: white; border-bottom: 2px solid #EBAC06;">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">¿Desea editar este info?</h1>
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">¿Desea editar esta información?</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: brightness(0) invert(1);"></button>
                                         </div>
                                         <form id="editInfo-form_{{info[0]}}" method="POST" action="/gestion_informacion/editar_informacion" enctype="multipart/form-data">
@@ -253,6 +259,13 @@
                                                                 {% endfor %}
                                                             </select>
                                                         </div>
+                                                        {% if info[9] == false %}
+                                                        <div class="mb-2 form-check">
+                                                            <input type="checkbox" class="form-check-input" id="status" name="status">
+                                                            <label class="form-check-label" for="status">Marque esta casilla si desea volver a hacer visible este contenido.</label>
+                                                        </div>
+                                                        {% endif %}
+
                                                     </div>                  
                                                 </div>
                                                 <div class="row justify-content-center mt-4">
@@ -268,7 +281,20 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <div class="modal fade" id="eliminar_info_{{info[0]}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">¿Desea eliminar esta información?</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class='modal-footer'>
+                                            <a href="/gestion_informacion/eliminar_informacion?id_info={{info[0]}}" class='btn btn-danger'>Eliminar</a>
+                                            <button type='button' class='btn btn btn-secondary' data-bs-dismiss='modal' aria-label='Close' title='Cancelar Actualizacion'>Cancelar</button>
+                                        </div>         
+                                    </div>
+                                </div>
+                            </div>
                             {%endfor%}
                         </tbody>
                     </table>

@@ -1,6 +1,6 @@
 
 {% block head %} {% include 'layouts/head.html' %} {% endblock %}
-<body class="body-inicio body-inicio-mapa">
+<body>
     <header id="main-hader">
         <div>
         <img src="../static/images/fondo_logo.svg" class="logo_inicial_map" alt="Logo fondo">
@@ -16,7 +16,11 @@
         <div class="white-gradient"></div>      
         </div>
     </section>  
-    {% block contenido %} {% include 'mapa_interactivo/contenido.html' %} {% endblock %}  
+    <section id="checklist-determinante" class="seccion-marca-agua-mapa">    
+        <!-- Imagen de fondo logo -->
+        <img src="../../static/images/logo_solo.svg" class="img-fluid marca-agua-mapa">
+        {% block contenido %} {% include 'mapa_interactivo/contenido.html' %} {% endblock %} 
+    </section> 
        
     {% block footer %} {% include 'layouts/footer.html' %} {% endblock %}
     {% block enlaces %} {% include 'layouts/enlaces.html' %} {% endblock %}

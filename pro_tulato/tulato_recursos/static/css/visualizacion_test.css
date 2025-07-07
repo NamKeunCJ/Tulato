@@ -1,0 +1,57 @@
+.seccion-marca-agua-eva {
+    position: relative;
+    overflow: hidden; /* 🔥 Esto recorta el desbordamiento de la imagen */
+    z-index: 0;
+}
+
+.marca-agua-eva {
+    position: absolute;
+    top: 0;
+    right: -200px; /* opcional según tu diseño */
+    width: 500px;
+    height: 500px;
+    object-fit: contain;
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: -1;
+}
+.test-card {
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    border-radius: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.test-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.btn-gradient_test {
+    background: linear-gradient(90deg, #EBAC06 0%, #063F23 100%);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+}
+
+.btn-gradient_test:hover {
+    background: linear-gradient(90deg, #063F23 0%, #EBAC06 100%);
+    color: #fff;
+    transform: scale(1.05);
+}
+
+.ribbon_test {
+    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+    border-bottom-left-radius: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.progress {
+    background-color: #dee2e6;
+    border-radius: 10px;
+}
+
+.progress-bar {
+    transition: width 0.6s ease;
+}

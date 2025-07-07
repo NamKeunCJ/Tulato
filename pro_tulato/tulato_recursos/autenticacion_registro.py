@@ -193,7 +193,6 @@ def redaccion_correo(codigo, email, nombre, apellido):
 @aut_reg.route('/edit_perfil', methods=['GET', 'POST'])
 def edit_perfil(): 
     modulo=2
-    menu_solo=5
     # Obtener el ID de usuario de la sesión actual
     user_id = session.get('user_id')    
     # Verificar si el usuario ha iniciado sesión
@@ -240,14 +239,13 @@ def edit_perfil():
                 genero = cur.fetchall()
                 cur.execute('SELECT grupo_id, tipo FROM grupo_etnico')
                 grupo = cur.fetchall()
-                return render_template('/autenticacion_registro/editar_perfil.html',modulo=modulo,menu_solo=menu_solo,genero=genero,grupo=grupo, user=user)
+                return render_template('/autenticacion_registro/editar_perfil.html',modulo=modulo,genero=genero,grupo=grupo, user=user)
             
 
 # EDITAR USUARIO ROLES
 @aut_reg.route('/edit_usuario', methods=['GET', 'POST'])
 def edit_usuario(): 
     modulo=2
-    menu_solo=5
     # Obtener el ID de usuario y ID rol de la sesión actual
     user_id = session.get('user_id')    
     user_rol = session.get('user_rol')  
@@ -300,6 +298,6 @@ def edit_usuario():
                 else:              
                     cur.execute('SELECT rol_id, tipo FROM rol')
                     rol = cur.fetchall()
-                    return render_template('/autenticacion_registro/editar_usuario.html',modulo=modulo,menu_solo=menu_solo,rol=rol, edit_usu=edit_usu, user=user)
+                    return render_template('/autenticacion_registro/editar_usuario.html',modulo=modulo,rol=rol, edit_usu=edit_usu, user=user)
     else:        
         return redirect(url_for('index'))  

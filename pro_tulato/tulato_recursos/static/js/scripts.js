@@ -304,12 +304,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-//Text tarea profesional
-var quill = new Quill('#editor', {
-    theme: 'snow'
-});
-document.querySelector('form').addEventListener('submit', function() {
-document.querySelector('#descripcion').value = quill.root.innerHTML;
+document.addEventListener('DOMContentLoaded', function () {
+    var quill = new Quill('#editor_agregar_info', {
+        theme: 'snow'
+    });
+
+    document.querySelector('form').addEventListener('submit', function () {
+        document.querySelector('#descripcion').value = quill.root.innerHTML;
+    });
 });
 
 /*Text tarea profesional

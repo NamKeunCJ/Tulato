@@ -19,6 +19,11 @@
     z-index: -1;
 }
 
+.modal-body {
+    transform: translate3d(0, 0, 0) !important;
+    will-change: transform !important;
+}
+
 .fondo-logo-formulario2 {
   position: fixed; /* Mejor que absolute para mantenerla fija al fondo en scroll */
   pointer-events: none;

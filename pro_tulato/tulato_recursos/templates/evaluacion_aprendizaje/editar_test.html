@@ -1,0 +1,176 @@
+{% block head %} {% include 'layouts/head.html' %} {% endblock %}
+<script>
+    $(function() {
+        $('#tabla').DataTable({
+            "language": {
+                "emptyTable": "No hay datos disponibles en la tabla",
+                "test": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                "testEmpty": "Mostrando 0 a 0 de 0 entradas",
+                "testFiltered": "(filtrado de _MAX_ entradas totales)",
+                "lengthMenu": "Mostrar _MENU_ entradas",
+                "loadingRecords": "Cargando...",
+                "processing": "Procesando...",
+                "search": "Buscar:",
+                "zeroRecords": "No se encontraron registros coincidentes",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Último",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                }
+            }
+        });
+    });
+</script>
+<body class="body-formulario2">
+    <header id="main-hader">
+        <div class="imagen-center">
+          <img src="../../static/images/borde-inferior.svg" class="fondo-logo-formulario2" alt="Logo fondo">
+          <img src="../../static/images/hojas.svg" class="logo-formulario2" alt="Logo nav">
+        </div>
+    
+        {% block navbar %} {% include 'layouts/navbar.html' %} {% endblock %}
+    </header>
+    <section id="section1-formulario2">
+      <div class="container mt-5">
+        <div class="row justify-content-center">
+          <div class="col-12">
+            <div class="card shadow p-4 p-md-5 rounded-5 mx-auto card-formulario2" style="margin-top: 3rem;">
+                <h4 class="text-center fw-bold mb-4">Lista de Tests</h4>  
+                <a href="/evaluacion_aprendizaje/agregar_test"
+                    class="btn btn-agregar-contenido fw-bold shadow-lg d-inline-flex align-items-center gap-2 px-4 py-2 mb-4">
+                    <i class="bi bi-plus-circle-fill"></i> Añade un Test
+                </a>
+
+             
+                <div class="table-responsive">
+                    <table id="tabla" class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nombre Test: </th>
+                                <th>Descripción Test: </th>
+                                <th>Estado Test: </th>
+                                <th> - </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for test in edit_test %}
+                                <tr>
+                                    <td>{{ test.nombre }}</td>
+                                    <td>{{ test.descripcion|safe }}</td>
+                                    <td>{% if test.status %} Visible {% else %} No Disponible {% endif %}</td>
+                                    <td>
+                                        <button class="btn icon" data-bs-toggle="modal" data-bs-target="#editar_test_{{ test.test_id }}">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <!-- Fuera de la tabla -->
+                    {% for test in edit_test %}
+                        <div class="modal fade" id="editar_test_{{ test.test_id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <form id="editTest-form_{{test.test_id}}" method="POST" action="/evaluacion_aprendizaje/editar_test">
+                                        <input type="hidden" name="id_test" value="{{ test.test_id }}">
+                                        <div class="modal-header" style="background-color: #024522; color: white; border-bottom: 2px solid #EBAC06;">
+                                            <h5 class="modal-title">¿Desea editar este Test?</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar" style="filter: brightness(0) invert(1);"></button>
+                                        </div>
+                                        <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
+                                            <div class="mb-2">
+                                                <label for="determinante" class="form-label">Determinante</label>
+                                                <select class="form-select" id="determinante" name="determinante" required>
+                                                    <option value="{{ test.determinante_id }}" selected hidden>{{ test.determinante }}</option>                                                
+                                                    {% for det in determinantes %}
+                                                    <option value="{{det[0]}}">{{det[1]}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <label >Tema:</label>
+                                            <input type="text" name="nombre" value="{{ test.nombre }}" class="form-control mb-2" maxlength="300" required>
+                                            <div class="col-12" style="margin-bottom: 2rem;">
+                                                <label for="descripcion_test_{{ test.test_id }}" class="form-label">
+                                                    Actualizar contenido:
+                                                </label>
+                                                
+                                                <div id="actualizador_test_{{ test.test_id }}" style="height: 300px;"></div>
+                                                <input type="hidden" name="descripcion" id="descripcion_test_{{ test.test_id }}" required>
+                                            </div>
+
+                                            <script>
+                                                document.addEventListener('DOMContentLoaded', function () {
+                                                    const quill = new Quill('#actualizador_test_{{ test.test_id }}', {
+                                                    theme: 'snow'
+                                                    });
+
+                                                    const contenido = `{{ test.descripcion|safe }}`;
+                                                    quill.root.innerHTML = contenido;
+                                                    document.querySelector('#descripcion_test_{{ test.test_id }}').value = contenido;
+
+                                                    document.querySelector('#editar_test_{{ test.test_id }} form').addEventListener('submit', function () {
+                                                    document.querySelector('#descripcion_test_{{ test.test_id }}').value = quill.root.innerHTML;
+                                                    });
+                                                });
+                                            </script>    
+                                            {% for pregunta in test.preguntas %}
+                                                <div class="mb-3">
+                                                    <label><b>{{ loop.index }}. </b>Pregunta:</label>
+                                                    <input type="text" name="pregunta_{{ pregunta.pregunta_id }}" value="{{ pregunta.enunciado }}" class="form-control mb-1" required>
+                                                    {% for opcion in pregunta.opciones %}
+                                                    {% set letra = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[loop.index0] %}
+                                                        <div class="input-group mb-1">
+                                                            <div class="input-group-text" style="background-color: #f2c75c;">
+                                                                <b>{{ letra }}. </b>
+                                                            </div>
+                                                            <input type="text" name="opcion_{{ pregunta.pregunta_id }}_{{ opcion.opcion_id }}" value="{{ opcion.respuesta }}" class="form-control" required>
+                                                            <div class="input-group-text" style="background-color: #f2c75c;">
+                                                                <input type="radio" name="correcta_{{ pregunta.pregunta_id }}" value="{{ opcion.opcion_id }}"
+                                                                    {% if opcion.es_correcta %}checked{% endif %} required>
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            {% endfor %}
+                                            <div class="mb-2">
+                                                <label for="estado_test" class="form-label">Habilitar o Deshabilitar Test: </label>
+                                                <select class="form-select" id="estado_test" name="estado_test" required>
+                                                    <option value="{{test.status}}" selected hidden>{% if test.status %} Visible {% else %} No Disponible {% endif %}</option>
+                                                    <option value=True>Visible</option>
+                                                    <option value=False>No Disponible</option>
+                                                </select>
+                                                <small >
+                                                    <div class="alert alert-warning d-flex align-items-center" style="margin-top: 1rem;" role="alert">
+                                                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                                        <div>
+                                                            <strong>Advertencia:</strong> Si este test aún no ha sido realizado por ningún usuario y se deshabilita, será eliminado de forma permanente.
+                                                        </div>
+                                                    </div>
+                                                </small>                                                
+
+                                            </div>
+                                        </div>
+                                        <div class="row justify-content-center">
+                                            <div class="col-auto text-center">
+                                                <div id="editTestContainer_{{test.test_id}}" class="mb-2 p-4"></div>
+                                                <div class="d-grid" style="margin-bottom: 2rem;">
+                                                    <button type="submit" class="btn btn_submit mx-auto" style="width: 15rem;">Actualizar Test</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% block enlaces %} {% include 'layouts/enlaces.html' %} {% endblock %}
+</body>

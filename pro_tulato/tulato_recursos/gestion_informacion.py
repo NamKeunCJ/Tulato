@@ -1,8 +1,12 @@
-from flask import Blueprint, flash, render_template, request, session, redirect, url_for, jsonify, current_app
+import io
+from flask import Blueprint, flash, render_template, request, send_file, session, redirect, url_for, jsonify, current_app
+
 from db import get_db_connection
 import os
 from werkzeug.utils import secure_filename
-
+from xhtml2pdf import pisa
+from io import BytesIO
+import base64
 from app import datos_usuario
 
 # Crear un Blueprint para las rutas hídricas
@@ -17,11 +21,11 @@ def allowed_file(filename):
 @ges_inf.route('/agregar_informacion', methods=['GET', 'POST'])
 def agregar_informacion():    
     modulo =2
-    menu_solo = 5
     user_id = session.get('user_id')    
+    user_rol = session.get('user_rol')
 
-    if user_id is None: 
-        return redirect(url_for('index'))  
+    if user_id is None or user_rol not in [1, 2]:
+        return redirect(url_for('index'))
     
     with get_db_connection() as conn:
         with conn.cursor() as cur:
@@ -39,9 +43,7 @@ def agregar_informacion():
                 rol = request.form.get('rol') or None
 
                 ruta_archivo = None
-                print(municipio)
-                print(vereda)
-                print(determinante)
+                
                 if file and file.filename != '':
                     if allowed_file(file.filename):
                         filename = secure_filename(file.filename)
@@ -89,7 +91,7 @@ def agregar_informacion():
                 determinante = cur.fetchall()
 
                 return render_template('/gestion_informacion/agregar_informacion.html',
-                    modulo=modulo, menu_solo=menu_solo,
+                    modulo=modulo, 
                     proyecto=proyecto, municipio=municipio, vereda=vereda,
                     determinante=determinante, rol=rol, user=user)
             
@@ -97,7 +99,6 @@ def agregar_informacion():
 @ges_inf.route('/editar_informacion', methods=['GET', 'POST'])
 def editar_informacion():
     modulo = 2
-    menu_solo = 5
     user_id = session.get('user_id')    
     user_rol = session.get('user_rol')
 
@@ -122,6 +123,8 @@ def editar_informacion():
                 determinante = form.get('determinante') or None
                 rol = form.get('rol') or None
                 file = request.files.get('file')
+                status = form.get('status')
+                
                 ruta_archivo = None
 
 
@@ -150,7 +153,12 @@ def editar_informacion():
                                WHERE contenido_id = %s""",
                             (determinante, vereda, municipio, proyecto, id_info))
 
+                
+                if status == 'on':
+                    cur.execute("""UPDATE contenido SET status = %s WHERE contenido_id = %s""",(True, id_info))
+
                 conn.commit()
+                
                 return 'success' 
 
             # --- GET: Renderizar datos ---
@@ -182,10 +190,26 @@ def editar_informacion():
             determinante = cur.fetchall()
 
     return render_template('/gestion_informacion/editar_informacion.html',
-                           modulo=modulo, menu_solo=menu_solo, user=user,
+                           modulo=modulo,  user=user,
                            proyecto=proyecto, municipio=municipio, vereda=vereda,
                            determinante=determinante, rol=rol, edit_info=edit_info)
  
+@ges_inf.route('/eliminar_informacion')
+def eliminar_informacion():
+    id_info=request.args.get('id_info')
+    
+    with get_db_connection() as conn:
+        with conn.cursor() as cur:
+            # Ejecutar la consulta para actualizar el estado del proyecto a "false"
+            cur.execute('''
+                UPDATE contenido SET status = %s WHERE contenido_id = %s
+            ''', (False, id_info,))
+            
+            # Confirmar los cambios en la base de datos
+            conn.commit()
+    
+    # Redirigir de vuelta a la lista de proyectos
+    return redirect(url_for('gestion_informacion.editar_informacion'))
 
 
 ##Informacion Demas Proyectos##
@@ -193,30 +217,116 @@ def editar_informacion():
 def proyectos():
     modulo=2    
     num_pro=int(request.args.get("num_pro"))
-    menu_solo=num_pro
-    if menu_solo<=0 or menu_solo>4:
-        print("Salio 6")
+    if num_pro<=0 or num_pro>4:
         return redirect(url_for('index')) 
 
-    user_id = session.get('user_id')  
+    user_id = session.get('user_id')
+    user_rol = session.get('user_rol')
+    print("rol: ", user_rol)
+    cantidad = 1  
     with get_db_connection() as conn:
         with conn.cursor() as cur:
             if user_id is not None:
                 # Solo buscamos el hash por el correo
-                user=datos_usuario(user_id)
+                user=datos_usuario(user_id)                
+                cur.execute("""SELECT a.contenido_id FROM asociacion_contenido a 
+                                JOIN contenido c on c.contenido_id=a.contenido_id
+                                WHERE proyecto_id=%s and c.rol_id=%s and c.status=%s""", (num_pro,user_rol,True))
+                contenido_id = cur.fetchall()
 
+                for contenido in contenido_id:
+                    cantidad = 1
+                    cur.execute("""SELECT cantidad FROM visualizacion WHERE usuario_id=%s AND contenido_id=%s""", (user_id, contenido[0]))
+                    my_info = cur.fetchone()
+
+                    if my_info is None:
+                        cur.execute("""INSERT INTO visualizacion (cantidad, usuario_id, contenido_id) VALUES (%s, %s, %s)""", (cantidad, user_id, contenido[0]))
+                    else:
+                        cantidad += my_info[0]
+                        cur.execute("""UPDATE visualizacion SET cantidad=%s WHERE usuario_id=%s AND contenido_id=%s""", (cantidad, user_id, contenido[0]))
+
+
+                    
             cur.execute('''SELECT c.titulo, c.descripcion, c.coordenada, c.imagen, r.tipo, c.status,
-                   p.nombre, m.nombre, v.nombre, d.tipo, c.video
-            FROM asociacion_contenido ac
-            left JOIN contenido c ON c.contenido_id = ac.contenido_id
-            left JOIN rol r ON r.rol_id = c.rol_id
-            left JOIN determinante d ON d.determinante_id = ac.determinante_id
-            left JOIN vereda v ON v.vereda_id = ac.vereda_id
-            left JOIN municipio m ON m.municipio_id = ac.municipio_id
-            left JOIN proyecto p ON p.proyecto_id = ac.proyecto_id
-            WHERE p.proyecto_id= %s;''', (num_pro,))
+                p.nombre, m.nombre, v.nombre, d.tipo, c.video, c.contenido_id
+                FROM asociacion_contenido ac
+                left JOIN contenido c ON c.contenido_id = ac.contenido_id
+                left JOIN rol r ON r.rol_id = c.rol_id
+                left JOIN determinante d ON d.determinante_id = ac.determinante_id
+                left JOIN vereda v ON v.vereda_id = ac.vereda_id
+                left JOIN municipio m ON m.municipio_id = ac.municipio_id
+                left JOIN proyecto p ON p.proyecto_id = ac.proyecto_id
+                WHERE p.proyecto_id= %s AND c.status=%s;''', (num_pro,True,))
             informacion = cur.fetchall()
+
     if user_id is not None:
-        return render_template('/gestion_informacion/proyectos.html',modulo=modulo,menu_solo=menu_solo,user=user, informacion=informacion)
+        return render_template('/gestion_informacion/proyectos.html',modulo=modulo,menu_solo=num_pro,user=user, info=informacion)
     else:
-        return render_template('/gestion_informacion/proyectos.html',modulo=modulo,menu_solo=menu_solo,informacion=informacion)
+        return render_template('/gestion_informacion/proyectos.html',modulo=modulo,menu_solo=num_pro,info=informacion)
+    
+@ges_inf.route("/descargar_info")
+def descargar_info():
+    id_info = request.args.get('id_info')
+    user_id = session.get('user_id')
+
+    if user_id is None:
+        return redirect(url_for('index'))
+
+    cantidad = 1
+
+    with get_db_connection() as conn:
+        with conn.cursor() as cur:
+            # Control de descargas
+            cur.execute("""SELECT cantidad FROM descarga WHERE usuario_id=%s AND contenido_id=%s""", (user_id, id_info))
+            my_info = cur.fetchone()
+
+            if my_info is None:
+                cur.execute("""INSERT INTO descarga (cantidad, usuario_id, contenido_id) VALUES (%s, %s, %s)""", (cantidad, user_id, id_info))
+            else:
+                cantidad += my_info[0]
+                cur.execute("""UPDATE descarga SET cantidad=%s WHERE usuario_id=%s AND contenido_id=%s""", (cantidad, user_id, id_info))
+
+            conn.commit()
+
+            # Obtener la información del contenido
+            cur.execute('''SELECT c.titulo, c.descripcion, c.coordenada, c.imagen, r.tipo, c.status,
+                p.nombre, m.nombre, v.nombre, d.tipo, c.video, c.contenido_id
+                FROM asociacion_contenido ac
+                LEFT JOIN contenido c ON c.contenido_id = ac.contenido_id
+                LEFT JOIN rol r ON r.rol_id = c.rol_id
+                LEFT JOIN determinante d ON d.determinante_id = ac.determinante_id
+                LEFT JOIN vereda v ON v.vereda_id = ac.vereda_id
+                LEFT JOIN municipio m ON m.municipio_id = ac.municipio_id
+                LEFT JOIN proyecto p ON p.proyecto_id = ac.proyecto_id
+                WHERE c.contenido_id = %s''', (id_info,))
+            info = cur.fetchone()
+
+    # Asegúrate de que la ruta de la imagen es válida
+    imagen_base64 = None
+    if info[3]:  # info[3] es la ruta a la imagen
+        ruta_imagen = os.path.join(current_app.root_path, info[3].lstrip("/"))  # elimina "/" inicial si existe
+        if os.path.exists(ruta_imagen):
+            with open(ruta_imagen, "rb") as image_file:
+                imagen_base64 = base64.b64encode(image_file.read()).decode("utf-8")
+
+    # Construir la ruta absoluta correctamente
+    ruta_logo = os.path.join(current_app.root_path, "static", "images", "logo.svg")
+
+    # Verificar y convertir a base64
+    logo_base64 = None
+    if os.path.exists(ruta_logo):
+        with open(ruta_logo, "rb") as f:
+            logo_base64 = base64.b64encode(f.read()).decode("utf-8")
+    # Renderizar la plantilla con la info
+    rendered = render_template("gestion_informacion/contenido_pdf.html", info=info, imagen_base64=imagen_base64,logo_base64=logo_base64)
+
+
+    # Generar el PDF
+    pdf_io = BytesIO()
+    pisa_status = pisa.CreatePDF(rendered, dest=pdf_io)
+    pdf_io.seek(0)
+
+    if pisa_status.err:
+        return "Error al generar el PDF", 500
+
+    return send_file(pdf_io, download_name="contenido.pdf", as_attachment=True)

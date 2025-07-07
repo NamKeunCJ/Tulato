@@ -22,13 +22,25 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
+    backface-visibility: hidden;
 }
+html {
+    font-size: 15px; /* en lugar de 16px por defecto */
+}
+p {
+    font-size: 16px; /* en lugar de 16px por defecto */
+}
+
 .header {
   position: relative;
   z-index: 5;
 }
 
-body.body-inicio {
+
+body {
+    position: relative;
+}
+.body-inicio {
     position: relative;
 }
 
@@ -53,14 +65,17 @@ body.body-inicio {
     position: absolute; top: 0; left: 0; z-index: 3;
 }
 .logo_inicial,
-.logo_nav_inicial {
+.logo_nav_inicial {    
     position: absolute;
-    pointer-events: none;
     width: 100%;
     height: auto;
     top: 0;
     left: 0;
     z-index: 4;
+}
+
+.logo_inicial {
+    pointer-events: none;
 }
 
 .logo_inicial {
@@ -249,7 +264,7 @@ a:hover {
 .image-container {
     position: relative;
     width: 100%;
-    height: 650px;
+    height: 592px;
     overflow: hidden;
 }
 
@@ -260,6 +275,20 @@ a:hover {
     border-bottom: 2px solid #EBAC06;
 }
 
+.btn-agregar-contenido {
+    background-color: #ffffff; /* Verde hoja claro */
+    color: #0f3d25; /* Verde oscuro intenso */
+    border: 2px solid #a5c63b;
+    border-radius: 2rem;
+    font-size: 1.05rem;
+    width: 20rem;
+    transition: all 0.3s ease;
+}
+
+.btn-agregar-contenido:hover {
+    border: 2px solid #c6b33b;
+    transform: scale(1.05);
+}
 
 @media (max-width: 767px) {
     .logo_inicial {
@@ -273,7 +302,6 @@ a:hover {
     .logo_inicial,
     .logo_nav_inicial{
         z-index: 4;
-        pointer-events: none;
     }
     .navbar{
          z-index:10;
@@ -343,7 +371,6 @@ a:hover {
     .logo_inicial,
     .logo_nav_inicial{
         z-index: 4;
-        pointer-events: none;
     }
     .navbar{
         z-index:10;
@@ -410,3 +437,18 @@ a:hover {
 }
 
 
+@media (max-width: 767.98px) {
+  #menuDropdown {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    right: auto !important;
+  }
+}
+
+@media (min-width: 768px) {
+  #menuDropdown {
+    right: 0 !important;
+    left: auto !important;
+    transform: none !important;
+  }
+}

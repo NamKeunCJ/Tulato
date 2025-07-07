@@ -12,6 +12,7 @@ def tulato_inicio():
     modulo=2
     menu_solo=4
     user_id = session.get('user_id')  
+    user_rol = session.get('user_rol')
     # Verificar si el método de la solicitud es POST
     if request.method == 'POST':   
         # Veredas y sus determinantes
@@ -35,8 +36,8 @@ def tulato_inicio():
 
         determinantes_labels = ['Social', 'Económico', 'Ambiental']
 
-        condiciones = ["c.status = %s"]
-        valores = [True]
+        condiciones = ["c.status = %s AND c.rol_id=%s"]
+        valores = [True,user_rol]
 
         subcondiciones = []
 
@@ -51,8 +52,7 @@ def tulato_inicio():
             condiciones.append('(' + ' OR '.join(subcondiciones) + ')')
 
         query = f'''
-            SELECT c.titulo, c.descripcion, c.coordenada, c.imagen, r.tipo, c.status,
-                   p.nombre, m.nombre, v.nombre, d.tipo, c.video
+            SELECT c.titulo, c.descripcion, c.coordenada, c.imagen, r.tipo, c.status, p.nombre, m.nombre, v.nombre, d.tipo, c.video, c.contenido_id
             FROM asociacion_contenido ac
             JOIN contenido c ON c.contenido_id = ac.contenido_id
             JOIN rol r ON r.rol_id = c.rol_id
@@ -67,6 +67,19 @@ def tulato_inicio():
             with conn.cursor() as cur:
                 cur.execute(query, valores)
                 informacion = cur.fetchall()
+                
+
+                for contenido in informacion:
+                    cantidad = 1
+                    cur.execute("""SELECT cantidad FROM visualizacion WHERE usuario_id=%s AND contenido_id=%s""", (user_id, contenido[11]))
+                    my_info = cur.fetchone()
+
+                    if my_info is None:
+                        cur.execute("""INSERT INTO visualizacion (cantidad, usuario_id, contenido_id) VALUES (%s, %s, %s)""", (cantidad, user_id, contenido[11]))
+                    else:
+                        cantidad += my_info[0]
+                        cur.execute("""UPDATE visualizacion SET cantidad=%s WHERE usuario_id=%s AND contenido_id=%s""", (cantidad, user_id, contenido[11]))
+
 
     else:
         candelillas = [False, False, False]
@@ -82,12 +95,12 @@ def tulato_inicio():
 
         # Si el usuario ha iniciado sesión, redirigir a la página principal
         if request.method == 'POST': 
-            return render_template('/mapa_interactivo/tulato_inicio.html',modulo=modulo, menu_solo=menu_solo, user=user, candelillas=veredas['Candelillas'],descolgadero=veredas['Descolgadero'],imbili=veredas['Imbili'],informacion=informacion)
+            return render_template('/mapa_interactivo/tulato_inicio.html',modulo=modulo, menu_solo=menu_solo, user=user, candelillas=veredas['Candelillas'],descolgadero=veredas['Descolgadero'],imbili=veredas['Imbili'],info=informacion)
         else:
             return render_template('/mapa_interactivo/tulato_inicio.html',modulo=modulo, menu_solo=menu_solo, user=user, candelillas=candelillas,descolgadero=descolgadero,imbili=imbili)
     else:
         if request.method == 'POST': 
-            return render_template('/mapa_interactivo/tulato_inicio.html',modulo=modulo, menu_solo=menu_solo, candelillas=veredas['Candelillas'],descolgadero=veredas['Descolgadero'],imbili=veredas['Imbili'],informacion=informacion)
+            return render_template('/mapa_interactivo/tulato_inicio.html',modulo=modulo, menu_solo=menu_solo, candelillas=veredas['Candelillas'],descolgadero=veredas['Descolgadero'],imbili=veredas['Imbili'],info=informacion)
         else:
             return render_template('/mapa_interactivo/tulato_inicio.html',modulo=modulo, menu_solo=menu_solo, candelillas=candelillas,descolgadero=descolgadero,imbili=imbili)
         

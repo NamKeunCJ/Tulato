@@ -1,0 +1,133 @@
+{% block head %} {% include 'layouts/head.html' %} {% endblock %}
+<body>
+    <header id="main-hader">
+        <div>
+        <img src="../static/images/fondo_logo.svg" class="logo_inicial_map" alt="Logo fondo">
+        <a href="/index">
+        <img src="../static/images/logo.svg" class="logo_nav_inicial_map" alt="Logo nav"></a>
+        </div>
+
+        {% block navbar %} {% include 'layouts/navbar.html' %} {% endblock %}
+    </header>
+    <section class="fondo_section_1 fondo_proyectos_nav">
+        <div class="white-gradient-map"></div>
+        <div class="image-container" style="height: 20rem;">           
+        <div class="white-gradient"></div>      
+        </div>
+    </section>  
+    {% if tests %}
+        <section class="container-fluid seccion-marca-agua-eva" style="padding: 5rem;">
+            <!-- Imagen de fondo logo -->
+            <img src="../../static/images/logo_solo.svg" class="img-fluid marca-agua-eva">
+            <h2 class="text-center mb-5 display-5 fw-bold text-primary-emphasis">🌟 Tests Disponibles</h2>
+            <div style="position:relative;padding-top:max(60%,324px);width:100%;height:0;"><iframe style="position:absolute;border:none;width:100%;height:100%;left:0;top:0;" src="https://online.fliphtml5.com/qviio/cvci/"  seamless="seamless" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" ></iframe></div>  
+            <div class="row g-4 mt-4">
+                {% for test in tests %}
+                {% set data = my_test_dict.get(test[0]|int, {'puntaje': 0, 'intento': 0, 'retroalimentacion':false}) %}
+                <div class="col-sm-12 col-md-6 col-lg-4">
+                    <div class="card test-card border-1 h-100 shadow-lg position-relative overflow-hidden" title="{{ test[1] }}" style="border-color: #EBAC06">
+                        <div class="card-body d-flex flex-column justify-content-between">
+                        <h5 class="fw-bold mb-3 text-dark text-truncate"><i class="fas fa-lightbulb text-warning me-2"></i>{{ test[1] }}</h5>
+
+                        <div class="progress mb-2" style="height: 12px;">
+                            <div class="progress-bar bg-success rounded-pill" role="progressbar"
+                                style="width: {{ data.puntaje }}%;" aria-valuenow="{{ data.puntaje }}"
+                                aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <small class="text-muted mb-3">{{ data.puntaje }}% - {{ data.intento }} Intento{{ 's' if data.intento != 1 }}</small>
+                            {% if data.retroalimentacion is true %}
+                                <small>
+                                    <a href="/evaluacion_aprendizaje/retroalimentacion?test_id={{ test[0] }}" class="mb-2">Retroalimentación</a>
+                                </small>
+                            {% endif %}
+                            
+                            <a href="/evaluacion_aprendizaje/visualizar_tests?test_id={{ test[0] }}"
+                                class="btn btn-gradient_test mt-4 w-100 fw-semibold">🚀 Realizar Quiz
+                            </a>
+                        </div>
+
+                        <div class="ribbon_test bg-gradient position-absolute top-0 end-0 px-3 py-1 text-white fw-bold"> Quiz </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    {% elif h_test %}
+        <section class="container-fluid seccion-marca-agua" style="padding: 5rem;">
+            <!-- Imagen de fondo logo -->
+            <img src="../../static/images/logo_solo.svg" class="img-fluid marca-agua">
+            <h2 class="text-center mb-4 display-5 fw-bold text-success">📝 {{ h_test[1] }}</h2>
+
+            <div class="mb-4 p-4 bg-white rounded shadow-sm border-start border-4 border-success">
+                <p class="mb-0">{{ h_test[2]|safe }}</p>
+            </div>
+
+            <form method="post" action="/evaluacion_aprendizaje/guardar_respuestas" class="bg-light p-4 rounded shadow-sm">
+                <h4 class="mb-4 text-success">🧠 Responde cuidadosamente cada pregunta:</h4>
+
+                {% for pregunta, opciones_pregunta in zip(h_pregunta, opciones) %}
+                    <div class="mb-5 p-3 bg-white rounded border-start border-4 border-warning shadow-sm">
+                        <h5 class="fw-bold mb-3 text-dark">
+                            {{ loop.index }}. {{ pregunta[1] }}
+                        </h5>
+
+                        {% for opcion in opciones_pregunta %}
+                            {% set letra = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[loop.index0] %}
+                            <div class="form-check ms-3 mb-2">
+                                <input class="form-check-input" type="radio"
+                                    name="pregunta_{{ pregunta[0] }}"
+                                    id="opcion_{{ opcion[0] }}"
+                                    value="{{ opcion[2] }}"
+                                    required>
+                                <label class="form-check-label" for="opcion_{{ opcion[0] }}">
+                                    {{ letra }}. {{ opcion[1] }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+
+                <div class="text-center mt-4">
+                    <input type="hidden" name="test_id" value="{{ h_test[0] }}">
+                    <button type="submit" class="btn btn-success btn-lg px-5">
+                        🚀 Enviar Respuestas
+                    </button>
+                </div>
+            </form>
+        </section>
+
+    {% elif r_test %}
+        <section class="container my-5">
+            <h2 class="text-center mb-4 display-5 fw-bold text-success">
+                📝 {{ r_test[1] }}
+            </h2>
+
+            <div class="mb-5 p-4 bg-white rounded shadow-sm border-start border-4 border-success">
+                {{ r_test[2]|safe }}
+            </div>
+
+            <form method="post" action="/evaluacion_aprendizaje/guardar_respuestas" class="bg-light p-4 rounded shadow">
+                <h4 class="mb-4 text-success">🔍 Retroalimentación por pregunta</h4>
+
+                {% for pregunta, opciones_pregunta in zip(r_pregunta, opciones) %}
+                    <div class="mb-4 p-3 bg-white rounded border-start border-4 border-warning shadow-sm">
+                        <h5 class="fw-bold mb-2 text-dark">
+                            {{ loop.index }}. {{ pregunta[1] }}
+                        </h5>
+
+                        <div class="alert alert-success mb-0">
+                            ✅ {{ opciones_pregunta[1] }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </form>
+        </section>
+
+    {% endif %}
+
+
+    
+    {% block footer %} {% include 'layouts/footer.html' %} {% endblock %}
+    {% block enlaces %} {% include 'layouts/enlaces.html' %} {% endblock %}
+</body>
+</html>

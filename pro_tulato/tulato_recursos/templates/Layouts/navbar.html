@@ -21,7 +21,39 @@
             <span class="palabra-nav-map">Estación de Recarga Híbrida</span>
             <span class="icono-nav-map">4</span>
         </div>
+        {% elif menu_solo==5 %}
+        <div class="contenedor-titulo-nav-map">
+            <span class="palabra-nav-map">Tests Disponibles</span>
+            <span class="icono-nav-map"><i class="bi bi-ui-checks"></i></span>
+        </div>
+        {% elif menu_solo==6 %}
+        <div class="contenedor-titulo-nav-map">
+            <span class="palabra-nav-map">
+                <a href="/evaluacion_aprendizaje/visualizar_tests" class="btn btn-warning btn-sm text-white py-0 px-1 me-2">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+                Test en Proceso
+            </span>
+            <span class="icono-nav-map"><i class="bi bi-ui-checks"></i></span>
+        </div>
+
+        {% elif menu_solo==7 %}
+        <div class="contenedor-titulo-nav-map">
+            <span class="palabra-nav-map">
+                <a href="/evaluacion_aprendizaje/visualizar_tests" class="btn btn-warning btn-sm text-white py-0 px-1 me-2">
+                    <i class="bi bi-arrow-left"></i>
+                </a>
+                Retroalimentación
+            </span>
+            <span class="icono-nav-map"><i class="bi bi-ui-checks"></i></span>
+        </div>
+        {% elif menu_solo==8 %}
+        <div class="contenedor-titulo-nav-map">
+            <span class="palabra-nav-map">REPORTES</span>
+            <span class="icono-nav-map"><i class="bi bi-bar-chart"></i></span>
+        </div>
         {% endif %}
+
         <div class="container-fluid justify-content-lg-end bg-white rounded-5 container-nav-mapa" style="height: 3.5rem;">
     {% elif modulo and modulo == 1 %}
         <div class="container-fluid justify-content-lg-end rounded-5 container-nav" style="margin-top: 1rem;height: 3.5rem;">
@@ -59,6 +91,11 @@
                             </a>
                         </div>
                         {% else %}
+                        {% if not modulo %}
+                            <!--Realizar Test-->
+                            <a href="/evaluacion_aprendizaje/visualizar_tests" class="btn btn-warning fw-semibold rounded-pill d-flex align-items-center px-3">Realizar Tests</a>
+                        {% endif %}
+
                         <!-- Dropdown usuario -->
                         <div class="dropdown">
                             <a class="btn btn-warning fw-semibold dropdown-toggle rounded-pill d-flex align-items-center px-3"
@@ -80,10 +117,10 @@
                                 <li><a class="dropdown-item d-flex align-items-center" href="/autenticacion_registro/edit_perfil"><i class="bi bi-person-circle me-2"></i> Editar Perfil</a></li>
                                 {% if user[3]== 'Administrador' or user[3]== 'Administrador Máximo' %}
                                 <li><a class="dropdown-item d-flex align-items-center" href="/autenticacion_registro/edit_usuario"><i class="bi bi-shield-lock me-2"></i> Asignación Roles</a></li>
-                                <li><a class="dropdown-item d-flex align-items-center" href="/gestion_informacion/agregar_informacion"><i class="bi bi-info-circle me-2"></i> Agregar Información</a></li>
-                                <li><a class="dropdown-item d-flex align-items-center" href="/gestion_informacion/editar_informacion"><i class="bi bi-pencil-square me-2"></i> Editar Información</a></li>
+                                <li><a class="dropdown-item d-flex align-items-center" href="/gestion_informacion/editar_informacion"><i class="bi bi-info-circle me-2"></i> Administrar Temas</a></li>                                
+                                <li><a class="dropdown-item d-flex align-items-center" href="/evaluacion_aprendizaje/editar_test"><i class="bi bi-plus-circle me-2"></i>Administrar Tests</a></li>
                                 {% endif %}                                
-                                <li><a class="dropdown-item d-flex align-items-center" href="#"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a></li>
+                                <li><a class="dropdown-item d-flex align-items-center" href="/sistema_reportes/visualizacion_dashboard"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a></li>
                             </ul>
                         </div>
                         {% endif %}
@@ -91,18 +128,28 @@
 
                     <!-- Menú desplegable -->
                     <div class="dropdown">
-                        <a class="nav-link text-decoration-none text-success d-flex flex-column align-items-center"
-                        href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="height: 40px; padding: 0.25rem 0.75rem;">
-                            <div class="icono-color" style="width: 30px; height: 30px; mask: url('../../static/images/iconos/menu.svg') no-repeat center; -webkit-mask: url('../../static/images/iconos/menu.svg') no-repeat center; mask-size: contain; -webkit-mask-size: contain; margin-bottom: 0.5rem;"></div>
+                        <a class="btn btn-white fw-semibold dropdown-toggle d-flex align-items-center px-3 rounded-pill"
+                            href="#" role="button" id="dropdownNavButton" data-bs-toggle="dropdown" aria-expanded="false"
+                            style="width: auto; height: 40px; padding: 0.25rem 0.75rem;">
+                            <div class="icono-color me-2"
+                                style="width: 24px; height: 24px;
+                                        background-color: currentColor;
+                                        mask: url('../../static/images/iconos/menu.svg') no-repeat center;
+                                        -webkit-mask: url('../../static/images/iconos/menu.svg') no-repeat center;
+                                        mask-size: contain; -webkit-mask-size: contain;"></div>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-lg-end dropdown-menu-sm-center dropdown-menu-responsive">
-                            <li><a class="dropdown-item d-flex align-items-center text-grap-sm" href="/index"><i class="bi bi-house-door me-2"></i> Inicio</a></li>
-                            <li><a class="dropdown-item d-flex align-items-center text-grap-sm" href="/mapa_interactivo/tulato_inicio"><i class="bi bi-globe2 me-2"></i> Apropiación tecnológica territorial</a></li>
-                            <li><a class="dropdown-item d-flex align-items-center text-grap-sm" href="/gestion_informacion/proyectos?num_pro=1"><i class="bi bi-folder2-open me-2"></i> Operación con Baterías Reutilizadas</a></li>
-                            <li><a class="dropdown-item d-flex align-items-center text-grap-sm" href="/gestion_informacion/proyectos?num_pro=2"><i class="bi bi-folder2 me-2"></i> Bote de Electromovilidad</a></li>
-                            <li><a class="dropdown-item d-flex align-items-center text-grap-sm" href="/gestion_informacion/proyectos?num_pro=3"><i class="bi bi-folder2 me-2"></i> Estación de Recarga Híbrida</a></li>
+
+                        <ul class="dropdown-menu" aria-labelledby="dropdownNavButton"
+                            id="menuDropdown">
+                            <li><a class="dropdown-item d-flex align-items-center" href="/index"><i class="bi bi-house-door me-2"></i> Inicio</a></li>
+                            <li><a class="dropdown-item d-flex align-items-center" href="/mapa_interactivo/tulato_inicio"><i class="bi bi-globe2 me-2"></i> Apropiación tecnológica territorial</a></li>
+                            <li><a class="dropdown-item d-flex align-items-center" href="/gestion_informacion/proyectos?num_pro=1"><i class="bi bi-folder2-open me-2"></i> Operación con Baterías Reutilizadas</a></li>
+                            <li><a class="dropdown-item d-flex align-items-center" href="/gestion_informacion/proyectos?num_pro=2"><i class="bi bi-folder2 me-2"></i> Bote de Electromovilidad</a></li>
+                            <li><a class="dropdown-item d-flex align-items-center" href="/gestion_informacion/proyectos?num_pro=3"><i class="bi bi-folder2 me-2"></i> Estación de Recarga Híbrida</a></li>
                         </ul>
                     </div>
+
+
 
                 </div>
             </div>

@@ -1,0 +1,352 @@
+
+{% block head %} {% include 'layouts/head.html' %} {% endblock %}
+<script>
+    $(function () {
+        function inicializarDataTable(tablaID, searchInputID, orden, pageLength, lengthMenu) {
+            var table = $(tablaID).DataTable({
+                scrollX: true,
+                language: {
+                    emptyTable: "No hay datos disponibles en la tabla",
+                    test: "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                    testEmpty: "Mostrando 0 a 0 de 0 entradas",
+                    testFiltered: "(filtrado de _MAX_ entradas totales)",
+                    lengthMenu: "Mostrar _MENU_ entradas",
+                    loadingRecords: "Cargando...",
+                    processing: "Procesando...",
+                    search: "Buscar:",
+                    zeroRecords: "No se encontraron registros coincidentes",
+                    paginate: {
+                        first: "Primero",
+                        last: "Último",
+                        next: "Siguiente",
+                        previous: "Anterior"
+                    }
+                },
+                order: orden,
+                pageLength: pageLength,
+                lengthMenu: lengthMenu
+            });
+
+            $(searchInputID).on('keyup', function () {
+                table.search(this.value).draw();
+            });
+        }
+
+        // Inicializar ambas tablas con sus configuraciones
+        inicializarDataTable('#tabla_descargas', '#customSearch', [[6, "desc"]], 3, [3, 5]);
+        inicializarDataTable('#tabla_seguimiento', '#seguimientoSearch', [[12, "desc"]], 20, [5, 10, 20, 30, 50]);
+    });
+</script>
+<style>
+    /*S e oculta el buscador propio de dataTable*/
+    div.dataTables_filter {
+        display: none;
+    }
+</style>
+<body>
+    <header id="main-hader">
+        <div>
+        <img src="../../static/images/fondo_logo.svg" class="logo_inicial_map" alt="Logo fondo">
+        <a href="/index">
+        <img src="../../static/images/logo.svg" class="logo_nav_inicial_map" alt="Logo nav"></a>
+        </div>
+
+        {% block navbar %} {% include 'layouts/navbar.html' %} {% endblock %}
+    </header>
+    <section class="fondo_section_1 fondo_proyectos_nav">
+        <div class="white-gradient-map"></div>
+        <div class="image-container" style="height: 20rem;">           
+        <div class="white-gradient"></div>      
+        </div>
+    </section>  
+    <section class="container-fluid seccion-marca-agua" style="height: auto; padding: 8rem;">
+        <!-- Imagen de fondo -->
+        <img src="../../static/images/logo_solo.svg" class="img-fluid marca-agua">
+
+        <div class="row g-3">
+            <!-- Quiz por resolver -->
+            <div class="col-lg-4 col-md-6">
+                <div class="card card-reporte h-100 grafica-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Test por resolver</h5>
+                        <div class="grafica-header">
+                            <h6>Interacción: Test</h6>                                    
+                            <span class="badge text-bg-success">Total Disponibles: {{test_realizados[0][0]+test_realizados[1][0]+test_realizados[2][0] }}</span>
+                        </div>
+                        <div 
+                            class="grafica-vereda"
+                            id="interaccionTest"
+                            data-vereda="Test Por Resolver"
+                            data-ejey="Cantidad de test"
+                            data-cantidad1="{{test_realizados[0][0]}}"
+                            data-cantidad2="{{test_realizados[1][0]}}"
+                            data-cantidad3="{{test_realizados[2][0]}}"
+                            data-base1="{{test_realizados[0][1]}}"
+                            data-base2="{{test_realizados[1][1]}}"
+                            data-base3="{{test_realizados[2][1]}}">
+                        </div>
+                        <div class="grafica-meta">
+                            <strong>Total Test:</strong><br>
+                            ▪ Porcentaje  {{test_realizados[0][1]}} o Sin resolver: <strong>{{test_realizados[0][0]}}</strong><br>
+                            ▪ Porcentaje  {{test_realizados[1][1]}}: <strong>{{test_realizados[1][0]}}</strong><br>
+                            ▪ Porcentaje  {{test_realizados[2][1]}}: <strong>{{test_realizados[2][0]}}</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mis Descargas -->
+            <div class="col-lg-8 col-md-6">
+                <div class="card card-reporte h-100 card-body grafica-card">
+                    <div class="card-body">
+                        <h5 class="card-title">Mis Descargas</h5>
+                        <input type="text" id="customSearch" class="form-control mb-2" placeholder="🔍 Buscar...">
+                        <div class="table-responsive">
+                            <table id="tabla_descargas" class="table table-bordered table-hover table-striped align-middle shadow-sm rounded">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th class="col-tema">Tema</th>
+                                        <th>Proyecto</th>
+                                        <th>Municipio</th>
+                                        <th>Vereda</th>
+                                        <th>Determinante</th>
+                                        <th>Fecha Última Descarga</th>
+                                        <th>Cantidad</th>
+                                        <th>Disponible</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for m_d in mis_descargas %}
+                                        <tr>
+                                            <td>{{ m_d[1] }}</td>
+                                            <td>{{ m_d[2] }}</td>
+                                            <td>{{ m_d[3] or "N/A" }}</td>
+                                            <td>{{ m_d[4] or "N/A" }}</td>
+                                            <td>{{ m_d[5] or "N/A" }}</td>
+                                            <td>{{ m_d[6] }}</td>
+                                            <td>{{ m_d[7] }}</td>
+                                            <td class="text-center">
+                                                {% if m_d[8] == true %}
+                                                    <span class="badge bg-success">Sí</span>
+                                                {% else %}
+                                                    <span class="badge bg-secondary">No</span>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Segunda fila -->
+        <div class="row g-3 mt-1">
+            <div class="col-lg-8">
+                <div class="row g-3"> 
+                    {% if user[3]== 'Administrador' or user[3]== 'Administrador Máximo' %}
+                    <!-- Rendimiento quiz -->
+                    <div class="col-md-6 col-lg-6">
+                        <div class="card card-reporte h-100 card-body grafica-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Rendimiento quiz</h5>
+                                <div 
+                                    class="grafica-rendimiento"
+                                    data-tituloambiental="{{ aci_err[0][0] }}"
+                                    data-tituloeconomico="{{ aci_err[1][0] }}"  
+                                    data-titulosocial="{{ aci_err[2][0] }}"
+                                    data-aciertoambiental="{{ aci_err[0][1] or 0 }}"
+                                    data-aciertoeconomico="{{ aci_err[1][1] or 0 }}"
+                                    data-aciertosocial="{{ aci_err[2][1] or 0 }}">
+                                </div> 
+                                <div class="grafica-meta">
+                                    <strong>Determinantes:</strong><br>
+                                    ▪ {{aci_err[0][0]}}: <strong>{{aci_err[0][1] or 0}}%</strong><br>
+                                    ▪ {{aci_err[1][0]}}: <strong>{{aci_err[1][1] or 0}}%</strong><br>
+                                    ▪ {{aci_err[2][0]}}: <strong>{{aci_err[2][1] or 0}}%</strong>
+                                </div>    
+                            </div>
+                        </div>
+                    </div> 
+                    
+                    <!-- Aciertos Social, Economico, Ambiental -->
+                    {% for aci_err in aci_err %}
+                        <div class="col-md-6 col-lg-6">
+                            <div class="card card-reporte h-100 text-center grafica-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Aciertos y Errores - {{aci_err[0]}}</h5>
+                                <div 
+                                class="grafica-torta"
+                                data-titulo="{{ aci_err[0] }}"
+                                data-acierto="{{ aci_err[1] or 0 }}"
+                                data-error="{{ aci_err[2] or 0 }}">
+                                </div>
+                                <div class="grafica-meta">
+                                <strong>Determinantes:</strong><br>
+                                ▪ {{aci_err[0]}} Acierto: <strong>{% if aci_err[1] is none %}Aun no hay datos{% else %}{{aci_err[1]}}%{% endif %}</strong><br>
+                                ▪ {{aci_err[0]}} Error: <strong>{% if aci_err[2] is none %}Aun no hay datos{% else %}{{aci_err[2]}}%{% endif %}</strong><br>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% endif %}
+                    
+                    {% if user[3]== 'Administrador Máximo' %}
+                    <!-- Descargas por Responsable -->
+                    <div class="col-12">
+                        <div class="card card-reporte h-100 grafica-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Seguimiento de Descargas de Información por Responsable</h5>
+                                <input type="text" id="seguimientoSearch" class="form-control mb-2" placeholder="🔍 Buscar...">
+                                <div class="table-responsive">
+                                    <table id="tabla_seguimiento" class="table table-sm table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th class="col-tema">Tema</th>
+                                                <th>Proyecto</th>
+                                                <th>Municipio</th>
+                                                <th>Vereda</th>
+                                                <th>Determinante</th>
+                                                <th>Correro</th>
+                                                <th>Rol</th>
+                                                <th>Genero</th>
+                                                <th>Edad</th>
+                                                <th>Grupo Etnico</th>
+                                                <th>Discapacidad</th>
+                                                <th>Fecha Ultima Descarga</th>
+                                                <th>Cantidad</th>
+                                                <th>Disponible en la pagina</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for seg_des in seg_des %}
+                                                <tr>
+                                                    <td>{{ seg_des[1] }}</td>
+                                                    <td>{{ seg_des[2] }}</td>
+                                                    <td>{% if seg_des[3] is none %} No Aplica {% else %} {{seg_des[3]}} {% endif %}</td>
+                                                    <td>{% if seg_des[4] is none %} No Aplica {% else %} {{seg_des[4]}} {% endif %}</td>
+                                                    <td>{% if seg_des[5] is none %} No Aplica {% else %} {{seg_des[5]}} {% endif %}</td>
+                                                    <td>{{ seg_des[6] }}</td>
+                                                    <td>{{ seg_des[7] }}</td>
+                                                    <td>{{ seg_des[8] }}</td>
+                                                    <td>{{ seg_des[9] }}</td>
+                                                    <td>{{ seg_des[10] }}</td>
+                                                    <td>{{ seg_des[11] }}</td>
+                                                    <td>{{ seg_des[12] }}</td>
+                                                    <td>{{ seg_des[13] }}</td>
+                                                    <td class="text-center">
+                                                        {% if seg_des[14] == true %}
+                                                            <span class="badge bg-success">Sí</span>
+                                                        {% else %}
+                                                            <span class="badge bg-secondary">No</span>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% if user[3]== 'Administrador' or user[3]== 'Administrador Máximo' %}
+            <!-- Interacciones -->
+            <div class="col-lg-4">
+                <div class="card card-reporte h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">INTERACCIONES PLATAFORMA</h5>
+
+                        {% set veredas = {} %}
+                        {% set normalizar = {
+                            'Económico': 'Economico',
+                            'Social': 'Social',
+                            'Ambiental': 'Ambiental'
+                        } %}
+                        {% for cantidad, determinante, vereda in int_det %}
+                            {% if vereda not in veredas %}
+                                {% set _ = veredas.update({
+                                    vereda: {
+                                        "valores": {"Social": 0, "Economico": 0, "Ambiental": 0},
+                                        "nombres": {"Social": "Social", "Economico": "Económico", "Ambiental": "Ambiental"}
+                                    }
+                                }) %}
+
+                            {% endif %}
+                            {% set clave = normalizar[determinante] %}
+                            {% set _ = veredas[vereda]["valores"].update({clave: cantidad}) %}
+                            {% set _ = veredas[vereda]["nombres"].update({clave: determinante}) %}
+
+                        {% endfor %}
+
+
+                        {% for vereda, datos in veredas.items() %}
+                            {% set valores = datos['valores'] %}
+                            {% set nombres = datos['nombres'] %}
+                            <div class="grafica-card">
+                                <div class="grafica-header">
+                                    <h6>Interacción: {{ vereda }}</h6>
+                                    <span class="badge text-bg-success">Total: {{ valores['Social'] + valores['Economico'] + valores['Ambiental'] }}</span>
+                                </div>
+                                <div 
+                                    class="grafica-vereda"
+                                    id="interaccion{{ vereda }}"
+                                    data-vereda="Interacciones - {{ vereda }}"
+                                    data-ejey="Interacciones"
+                                    data-cantidad1="{{ valores['Social'] }}"
+                                    data-cantidad2="{{ valores['Economico'] }}"
+                                    data-cantidad3="{{ valores['Ambiental'] }}"
+                                    data-base1="{{ nombres['Social'] }}"
+                                    data-base2="{{ nombres['Economico'] }}"
+                                    data-base3="{{ nombres['Ambiental'] }}">
+                                </div>
+                                <div class="grafica-meta">
+                                    <strong>Determinantes:</strong><br>
+                                    ▪ {{ nombres['Social'] }}: <strong>{{ valores['Social'] }}</strong><br>
+                                    ▪ {{ nombres['Economico'] }}: <strong>{{ valores['Economico'] }}</strong><br>
+                                    ▪ {{ nombres['Ambiental'] }}: <strong>{{ valores['Ambiental'] }}</strong>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        
+                        <div class="grafica-card">
+                            <div class="grafica-header">
+                                <h6>Interacción: General</h6>                                    
+                                <span class="badge text-bg-success">Total: {{int_gen[0][0]+int_gen[1][0]+int_gen[2][0] }}</span>
+                            </div>
+                            <div 
+                                class="grafica-vereda"
+                                id="interaccionGeneral"
+                                data-vereda="Interacciones - General"
+                                data-ejey="Interacciones"
+                                data-cantidad1="{{int_gen[0][0]}}"
+                                data-cantidad2="{{int_gen[1][0]}}"
+                                data-cantidad3="{{int_gen[2][0]}}"
+                                data-base1="{{int_gen[0][1]}}"
+                                data-base2="{{int_gen[1][1]}}"
+                                data-base3="{{int_gen[2][1]}}">
+                            </div>
+                            <div class="grafica-meta">
+                                <strong>Determinantes:</strong><br>
+                                ▪ {{int_gen[0][1]}}: <strong>{{int_gen[0][0]}}</strong><br>
+                                ▪ {{int_gen[1][1]}}: <strong>{{int_gen[1][0]}}</strong><br>
+                                ▪ {{int_gen[2][1]}}: <strong>{{int_gen[2][0]}}</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}                
+            </div>
+        </div>
+    </section>
+        
+    {% block footer %} {% include 'layouts/footer.html' %} {% endblock %}
+    {% block enlaces %} {% include 'layouts/enlaces.html' %} {% endblock %}
+</body>
+</html>

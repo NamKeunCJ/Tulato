@@ -63,6 +63,17 @@ document.getElementById('form-determinantes').addEventListener('submit', async f
     });
 });
 
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.descargar-btn');
+    if (btn) {
+        e.preventDefault();
+        const id = btn.getAttribute('data-id');
+        if (id) {
+            window.open(`/gestion_informacion/descargar_info?id_info=${id}`, '_blank');
+        }
+    }
+});
+
 //PAUSA DEL VIDEO
 document.addEventListener('DOMContentLoaded', function () {
     const modals = document.querySelectorAll('.modal');
