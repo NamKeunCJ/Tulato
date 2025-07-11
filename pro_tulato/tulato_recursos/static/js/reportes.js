@@ -92,7 +92,7 @@ document.querySelectorAll('.grafica-torta').forEach(div => {
     const options = {
         chart: {
             type: 'pie',
-            width: 380,
+            width: '100%',
             toolbar: {
                 show: true,
                 tools: {

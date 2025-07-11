@@ -204,7 +204,19 @@
     position: relative;
     z-index: 6;
 }
-
+.custom-padding-contenido {
+    padding: 8rem;
+    padding-top: 1rem !important;
+}
+.custom-padding-test {
+    padding: 10rem;
+    padding-top: 1rem !important;
+}
+@media (max-width: 576px) {
+    .custom-padding-contenido, .custom-padding-test {
+        padding: 1rem !important;
+    }
+}
 /* Responsive teléfonos */
 @media (max-width: 912px)  {
     .logo_inicial_map {

@@ -42,6 +42,16 @@
     div.dataTables_filter {
         display: none;
     }
+    .custom-padding-dashboard {
+        padding: 8rem;
+    }
+
+    @media (max-width: 576px) {
+        .custom-padding-dashboard {
+            padding: 1rem !important;
+        }
+    }
+
 </style>
 <body>
     <header id="main-hader">
@@ -59,13 +69,14 @@
         <div class="white-gradient"></div>      
         </div>
     </section>  
-    <section class="container-fluid seccion-marca-agua" style="height: auto; padding: 8rem;">
+    <section class="container-fluid seccion-marca-agua custom-padding-dashboard" style="height: auto;">
+
         <!-- Imagen de fondo -->
         <img src="../../static/images/logo_solo.svg" class="img-fluid marca-agua">
 
         <div class="row g-3">
             <!-- Quiz por resolver -->
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-4 col-md-6 col-12">
                 <div class="card card-reporte h-100 grafica-card">
                     <div class="card-body">
                         <h5 class="card-title">Test por resolver</h5>
@@ -96,13 +107,13 @@
             </div>
 
             <!-- Mis Descargas -->
-            <div class="col-lg-8 col-md-6">
+            <div class="col-lg-8 col-md-6 col-12">
                 <div class="card card-reporte h-100 card-body grafica-card">
                     <div class="card-body">
                         <h5 class="card-title">Mis Descargas</h5>
                         <input type="text" id="customSearch" class="form-control mb-2" placeholder="🔍 Buscar...">
                         <div class="table-responsive">
-                            <table id="tabla_descargas" class="table table-bordered table-hover table-striped align-middle shadow-sm rounded">
+                            <table id="tabla_descargas" class="table table-bordered table-hover table-striped align-middle shadow-sm rounded table-responsive table-responsive-sm">
                                 <thead class="table-dark">
                                     <tr>
                                         <th class="col-tema">Tema</th>
@@ -144,14 +155,14 @@
 
         <!-- Segunda fila -->
         <div class="row g-3 mt-1">
-            <div class="col-lg-8">
+            <div class="col-lg-8 col-md-6 col-12">
                 <div class="row g-3"> 
                     {% if user[3]== 'Administrador' or user[3]== 'Administrador Máximo' %}
-                    <!-- Rendimiento quiz -->
-                    <div class="col-md-6 col-lg-6">
+                    <!-- Rendimiento test -->
+                    <div class="col-md-6 col-lg-6 col-12">
                         <div class="card card-reporte h-100 card-body grafica-card">
                             <div class="card-body">
-                                <h5 class="card-title">Rendimiento quiz</h5>
+                                <h5 class="card-title">Rendimiento test</h5>
                                 <div 
                                     class="grafica-rendimiento"
                                     data-tituloambiental="{{ aci_err[0][0] }}"
@@ -173,8 +184,8 @@
                     
                     <!-- Aciertos Social, Economico, Ambiental -->
                     {% for aci_err in aci_err %}
-                        <div class="col-md-6 col-lg-6">
-                            <div class="card card-reporte h-100 text-center grafica-card">
+                        <div class="col-lg-6 col-md-6  col-12">
+                            <div class="card card-reporte h-100 card-body grafica-card">
                             <div class="card-body">
                                 <h5 class="card-title">Aciertos y Errores - {{aci_err[0]}}</h5>
                                 <div 
@@ -202,7 +213,7 @@
                                 <h5 class="card-title">Seguimiento de Descargas de Información por Responsable</h5>
                                 <input type="text" id="seguimientoSearch" class="form-control mb-2" placeholder="🔍 Buscar...">
                                 <div class="table-responsive">
-                                    <table id="tabla_seguimiento" class="table table-sm table-striped table-hover">
+                                    <table id="tabla_seguimiento" class="table table-sm table-striped table-hover table-responsive table-responsive-sm">
                                         <thead>
                                             <tr>
                                                 <th class="col-tema">Tema</th>

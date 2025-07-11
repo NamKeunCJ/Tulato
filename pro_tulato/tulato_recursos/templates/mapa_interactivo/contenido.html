@@ -1,6 +1,6 @@
 {% if info %}
 <section>
-    <div class="container-fluid" style="padding: 5rem;">
+    <div class="container-fluid custom-padding-contenido">
     {% for info in info %}
         {% if (not user and info[4] == 'Usuario') or (user and user[3] == info[4]) %}
         <div class="card mb-5 border-0 rounded-4 shadow-lg position-relative overflow-hidden "
@@ -54,7 +54,7 @@
                 <div class="col-lg-6 p-4">
                     <div class="rounded-4 overflow-hidden shadow-lg" style="position: relative; width: 100%; padding-top: 56.25%;">
                         <iframe
-                            src="https://www.google.com/maps?q={{info[2]}}&hl=es&z=20&output=embed"
+                            src="https://www.google.com/maps?q={{info[2]}}&hl=es&z=20&t=k&output=embed"
                             class="border-0"
                             style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 1rem;"
                             loading="lazy"
@@ -63,6 +63,7 @@
                         </iframe>
                     </div>
                 </div>
+
                 <!-- Multimedia -->
                 <div class="col-lg-6 p-4 d-flex align-items-center justify-content-center">
                     {% if info[3] is not none %}
