@@ -1,16 +1,63 @@
 {% if info %}
-<section>
-    <div class="container-fluid custom-padding-contenido">
+<style>
+.accordion-button.custom-toggle {
+    background-color: #063F23;
+    color: #ffffff;
+    box-shadow: none;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.accordion-button.custom-toggle:hover,
+.accordion-button.custom-toggle:focus {
+    background-color: #075d33;
+    color: #fff;
+    box-shadow: 0 0 0 0.2rem rgba(235, 172, 6, 0.5); /* efecto dorado */
+}
+
+.accordion-button.custom-toggle:not(.collapsed) {
+    background-color: #063F23;
+    color: #ffffff;
+}
+
+.accordion-icon-rotate {
+    transition: transform 0.3s ease;
+}
+
+.accordion-button[aria-expanded="true"] .accordion-icon-rotate {
+    transform: rotate(180deg);
+}
+</style>
+
+
+<section >
+<div class="container-fluid custom-padding-contenido" >
+    <div class="accordion" id="accordionExample">
+        {% set count = namespace(index=0) %}
+
     {% for info in info %}
         {% if (not user and info[4] == 'Usuario') or (user and user[3] == info[4]) %}
-        <div class="card mb-5 border-0 rounded-4 shadow-lg position-relative overflow-hidden "
-            style="background: linear-gradient(135deg, #fcf9f2, #fffdeb); width: 100% !important; max-width: 100% !important; transition: transform 0.3s ease, box-shadow 0.3s ease;margin-top: 4rem;">
+        {% set count.index = count.index + 1 %}
+        <div class="accordion-item border-0 mb-4 shadow-sm rounded-4 overflow-hidden">
+        <h2 class="accordion-header" id="heading{{ loop.index }}">
+            <button class="accordion-button collapsed custom-toggle py-4 d-flex justify-content-between align-items-center"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapse{{ loop.index }}"
+                        aria-expanded="false"
+                        aria-controls="collapse{{ loop.index }}">
+                <span class="fw-bold fs-5">{{ info[0] }}</span>
+            </button>
 
+        </h2>
+
+        <div id="collapse{{ loop.index }}" class="accordion-collapse collapse {% if count.index == 1 %}show{% endif %}" data-bs-parent="#accordionExample" style="background-color: #F3FAF5;">            
+            <div class="accordion-body p-0">
             <!-- Encabezado -->
-            <div class="px-4 py-3" style="background-color: #024522; color: white; border-bottom: 4px solid #EBAC06;">
+            <div class="px-4 py-3 bg-primary-green text-white border-bottom border-4" style="border-color: #EBAC06;">
                 <div class="row align-items-center">
-                    <div class="col-12 col-md-10 px-3 px-md-5 pt-4 pb-3">
-                        <div class="display-5 mb-2">
+                    <div class="col-md-10 px-3 px-md-5 pt-4 pb-3">
+                        <div class="d-flex align-items-center gap-3" style="color: #063F23;">
+                            <div class="fs-2">
                             {% if info[9] == 'Social' %}
                                 <i class="bi bi-people-fill"></i>
                             {% elif info[9] == 'Económico' %}
@@ -20,86 +67,93 @@
                             {% else %}
                                 <i class="bi bi-diagram-3"></i>
                             {% endif %}
+                            </div>
+                            <h4 class="fw-bold m-0">
+                            {% if info[9] and info[8] %}
+                                Determinante {{ info[9] }} - {{ info[8] }}
+                            {% else %}
+                                {{ info[0] }} 
+                            {% endif %}
+                            </h4>
                         </div>
-                        {% if info[9] and info[8] %}
-                        <h4 class="m-0 fw-bold">Determinante {{ info[9] }} - {{ info[8] }}</h4>
-                        {% else %}
-                        <h4 class="m-0 fw-bold">{{ info[0] }}</h4>
-                        {% endif %}
                     </div>
-                    {% if user %}
-                        <div class="col-12 col-md-2 px-3 px-md-5 pt-2 pb-4 d-flex justify-content-md-end justify-content-start">
-                            <a href="#" 
-                                class="btn btn-warning text-dark fw-bold d-flex align-items-center gap-2 descargar-btn"
-                                data-id="{{ info[11] }}">
-                                <i class="bi bi-download"></i> Descargar
-                            </a>
-                        </div>
-                    {% endif %}
+
+                    
+                {% if user %}
+                <div class="col-md-2 px-3 py-3 d-flex justify-content-md-end justify-content-start align-items-start">
+                    <a href="#"
+                    class="btn btn-download fw-bold d-flex align-items-center gap-2 descargar-btn"
+                    style="background-color: #EBAC06; color: #063F23;"
+                    data-id="{{ info[11] }}">
+                    <i class="bi bi-download"></i> Descargar
+                    </a>
+                </div>
+                {% endif %}
                 </div>
             </div>
 
-
-            <!-- Título y texto -->
-            <div class="row g-0 fondo_informacion_card">
-                <div class="col-10 px-5 pt-5 pb-4">
-                    <h3 class="fw-bold mb-3" style="color: #024522; border-left: 6px solid #EBAC06; padding-left: 1rem;">{{ info[0] }}</h3>
-                    <div class="fs-5 text-secondary">{{ info[1] | safe }}</div>
+            <!-- Contenido -->
+            <div class="row g-0  px-5 pt-5 pb-4" >
+                <div class="col-12">
+                <h3 class="fw-bold mb-3 text-primary-green border-highlight ps-3">{{ info[0] }}</h3>
+                <div class="fs-5 text-dark">{{ info[1] | safe }}</div>
                 </div>
             </div>
 
             <!-- Multimedia y mapa -->
-            <div class="row g-0" style="background-color: #ffeeb6; border-radius: 3rem; margin: 2rem;">
-                <!-- Mapa -->
+            <div class="row g-0 mt-4 mx-2 bg-light rounded-4">
                 <div class="col-lg-6 p-4">
-                    <div class="rounded-4 overflow-hidden shadow-lg" style="position: relative; width: 100%; padding-top: 56.25%;">
-                        <iframe
-                            src="https://www.google.com/maps?q={{info[2]}}&hl=es&z=20&t=k&output=embed"
-                            class="border-0"
-                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 1rem;"
-                            loading="lazy"
-                            allowfullscreen
+                <div class="rounded-4 shadow-lg position-relative w-100" style="padding-top: 56.25%;">
+                    <iframe src="https://www.google.com/maps?q={{ info[2] }}&hl=es&z=20&t=k&output=embed"
+                            class="position-absolute top-0 start-0 w-100 h-100 border-0 rounded-4"
+                            loading="lazy" allowfullscreen
                             referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
-                    </div>
+                    </iframe>
                 </div>
-
-                <!-- Multimedia -->
+                </div>
                 <div class="col-lg-6 p-4 d-flex align-items-center justify-content-center">
-                    {% if info[3] is not none %}
-                        <img src="../../{{ info[3] }}" alt="Multimedia" class="img-fluid rounded-4 shadow w-100 border border-3 border-light">
-                    {% endif %}
-                </div>                
+                {% if info[3] is not none %}
+                <img src="../../{{ info[3] }}" alt="Multimedia"
+                    class="img-fluid rounded-4 shadow w-100 border border-3 border-light">
+                {% endif %}
+                </div>
             </div>
+
+            <!-- Video -->
             {% if info[10] is not none %}
-            <div class="row g-0" style="background-color: #ffeeb6; border-radius: 3rem; margin: 2rem;">
-                <!-- Multimedia -->
-                <div class="col-lg-12 p-4 d-flex align-items-center justify-content-center">                    
-                    {% set video_url = info[10] %}
-                    {% set video_id = video_url.split('?')[0].split('/')[-1] %}
-                    <iframe width="100%" height="600rem" style="border-radius: 3rem;"
-                        src="https://www.youtube.com/embed/{{ video_id }}" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            <div class="row g-0 mt-4 mx-2 bg-highlight rounded-4">
+                <div class="col-12 p-4 d-flex align-items-center justify-content-center">
+                {% set video_url = info[10] %}
+                {% set video_id = video_url.split('?')[0].split('/')[-1] %}
+                <iframe width="100%" height="500rem" class="rounded-4"
+                        src="https://www.youtube.com/embed/{{ video_id }}"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen>
-                    </iframe>                    
+                </iframe>
                 </div>
             </div>
             {% endif %}
+
+            </div>
+        </div>
         </div>
         {% endif %}
     {% endfor %}
     </div>
+</div>
 </section>
+
 <script>
-    document.addEventListener('click', function(e) {
-        const btn = e.target.closest('.descargar-btn');
-        if (btn) {
-            e.preventDefault();
-            const id = btn.getAttribute('data-id');
-            window.open(`/gestion_informacion/descargar_info?id_info=${id}`, '_blank');
-        }
-    });
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.descargar-btn');
+    if (btn) {
+    e.preventDefault();
+    const id = btn.getAttribute('data-id');
+    window.open(`/gestion_informacion/descargar_info?id_info=${id}`, '_blank');
+    }
+});
 </script>
 
 {% endif %}
+

@@ -27,54 +27,35 @@
     </button>
 
     <!-- Botones específicos ocultos por defecto -->
-    <div class="resultado-botones">
-      {% if imbili[0] %}
-        <button id="imbali-social" class="boton-mapa boton-vereda" style="display:none; top: 46%; left: 57%;" data-bs-toggle="modal" data-bs-target="#modalImbiliSocial">
-          <i class="bi bi-people-fill"></i> <b>Imbilí Social</b>
-        </button>
-      {% endif %}
-      {% if imbili[1] %}
-        <button id="imbali-economico" class="boton-mapa boton-vereda" style="display:none; top: 60%; left: 55%;" data-bs-toggle="modal" data-bs-target="#modalImbiliEconomico">
-          <i class="bi bi-cash-coin"></i> <b>Imbilí Económico</b>
-        </button>
-      {% endif %}
-      {% if imbili[2] %}
-        <button id="imbali-ambiental" class="boton-mapa boton-vereda" style="display:none; top: 49%; left: 45%;" data-bs-toggle="modal" data-bs-target="#modalImbiliAmbiental">
-          <i class="bi bi-tree"></i> <b>Imbilí Ambiental</b>
-        </button>
-      {% endif %}
+    <div>      
+      <button id="imbali-social" class="boton-mapa boton-vereda" style="display:none; top: 46%; left: 57%;" data-bs-toggle="modal" data-bs-target="#modalImbiliSocial">
+        <i class="bi bi-people-fill"></i> <b>Imbilí Social</b>
+      </button>
+      <button id="imbali-economico" class="boton-mapa boton-vereda" style="display:none; top: 60%; left: 55%;" data-bs-toggle="modal" data-bs-target="#modalImbiliEconomico">
+        <i class="bi bi-cash-coin"></i> <b>Imbilí Económico</b>
+      </button>
+      <button id="imbali-ambiental" class="boton-mapa boton-vereda" style="display:none; top: 49%; left: 45%;" data-bs-toggle="modal" data-bs-target="#modalImbiliAmbiental">
+        <i class="bi bi-tree"></i> <b>Imbilí Ambiental</b>
+      </button>
+      <button id="candelillas-social" class="boton-mapa boton-vereda" style="display:none; top: 40%; left: 57%;" data-bs-toggle="modal" data-bs-target="#modalCandelillasSocial">
+        <i class="bi bi-people-fill"></i> <b>Candelillas Social</b>
+      </button>
+      <button id="candelillas-economico" class="boton-mapa boton-vereda" style="display:none; top: 60%; left: 55%;" data-bs-toggle="modal" data-bs-target="#modalCandelillasEconomico">
+        <i class="bi bi-cash-coin"></i> <b>Candelillas Económico</b>
+      </button>
+      <button id="candelillas-ambiental" class="boton-mapa boton-vereda" style="display:none; top: 49%; left: 45%;"  data-bs-toggle="modal" data-bs-target="#modalCandelillasAmbiental">
+        <i class="bi bi-tree"></i> <b>Candelillas Ambiental</b>
+      </button>
 
-      {% if candelillas[0] %}
-        <button id="candelillas-social" class="boton-mapa boton-vereda" style="display:none; top: 40%; left: 57%;" data-bs-toggle="modal" data-bs-target="#modalCandelillasSocial">
-          <i class="bi bi-people-fill"></i> <b>Candelillas Social</b>
-        </button>
-      {% endif %}
-      {% if candelillas[1] %}
-        <button id="candelillas-economico" class="boton-mapa boton-vereda" style="display:none; top: 60%; left: 55%;" data-bs-toggle="modal" data-bs-target="#modalCandelillasEconomico">
-          <i class="bi bi-cash-coin"></i> <b>Candelillas Económico</b>
-        </button>
-      {% endif %}
-      {% if candelillas[2] %}
-        <button id="candelillas-ambiental" class="boton-mapa boton-vereda" style="display:none; top: 49%; left: 45%;"  data-bs-toggle="modal" data-bs-target="#modalCandelillasAmbiental">
-          <i class="bi bi-tree"></i> <b>Candelillas Ambiental</b>
-        </button>
-      {% endif %}
-
-      {% if descolgadero[0] %}
-        <button id="descolgadero-social" class="boton-mapa boton-vereda" style="display:none; top: 40%; left: 57%;" data-bs-toggle="modal" data-bs-target="#modalDescolgaderoSocial">
-          <i class="bi bi-people-fill"></i> <b>Descolgadero Social</b>
-        </button>
-      {% endif %}
-      {% if descolgadero[1] %}
-        <button id="descolgadero-economico" class="boton-mapa boton-vereda" style="display:none; top: 60%; left: 55%;" data-bs-toggle="modal" data-bs-target="#modalDescolgaderoEconomico">
-          <i class="bi bi-cash-coin"></i> <b>Descolgadero Económico</b>
-        </button>
-      {% endif %}
-      {% if descolgadero[2] %}
-        <button id="descolgadero-ambiental" class="boton-mapa boton-vereda" style="display:none; top: 49%; left: 45%;" data-bs-toggle="modal" data-bs-target="#modalDescolgaderoAmbiental">
-          <i class="bi bi-tree"></i> <b>Descolgadero Ambiental</b>
-        </button>
-      {% endif %}
+      <button id="descolgadero-social" class="boton-mapa boton-vereda" style="display:none; top: 40%; left: 57%;" data-bs-toggle="modal" data-bs-target="#modalDescolgaderoSocial">
+        <i class="bi bi-people-fill"></i> <b>Descolgadero Social</b>
+      </button>
+      <button id="descolgadero-economico" class="boton-mapa boton-vereda" style="display:none; top: 60%; left: 55%;" data-bs-toggle="modal" data-bs-target="#modalDescolgaderoEconomico">
+        <i class="bi bi-cash-coin"></i> <b>Descolgadero Económico</b>
+      </button>
+      <button id="descolgadero-ambiental" class="boton-mapa boton-vereda" style="display:none; top: 49%; left: 45%;" data-bs-toggle="modal" data-bs-target="#modalDescolgaderoAmbiental">
+        <i class="bi bi-tree"></i> <b>Descolgadero Ambiental</b>
+      </button>
     </div>
 
     <!-- Contenedor del mapa -->

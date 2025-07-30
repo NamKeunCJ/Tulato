@@ -28,7 +28,7 @@ html {
     font-size: 15px; /* en lugar de 16px por defecto */
 }
 p {
-    font-size: 16px; /* en lugar de 16px por defecto */
+    font-size: 17px; /* en lugar de 16px por defecto */
 }
 
 .header {
@@ -115,7 +115,7 @@ body {
 
 /* Fondo del segundo section*/
 .fondo_section_2 {
-    background: url('../images/Recurso2.png') no-repeat center/cover;
+    background: url('../images/Recurso2.png') no-repeat center/cover ;
     position: relative;
 }
 
@@ -141,9 +141,6 @@ body {
     font-family: 'CaustenRound-Regular';
 }
 
-p {
-    font-family: 'CaustenRound-Medium';
-}
 .text-tulato-titulo{
     color:#063F23
 }
