@@ -29,34 +29,36 @@
     <!-- Botones específicos ocultos por defecto -->
     <div>      
       <button id="imbali-social" class="boton-mapa boton-vereda" style="display:none; top: 46%; left: 57%;" data-bs-toggle="modal" data-bs-target="#modalImbiliSocial">
-        <i class="bi bi-people-fill"></i> <b>Imbilí Social</b>
+        <i class="ph ph-car-profile"></i> <b>Carretera a Imbili</b>
       </button>
       <button id="imbali-economico" class="boton-mapa boton-vereda" style="display:none; top: 60%; left: 55%;" data-bs-toggle="modal" data-bs-target="#modalImbiliEconomico">
-        <i class="bi bi-cash-coin"></i> <b>Imbilí Económico</b>
+        <i class="ph ph-anchor-simple"></i> <b>Muelle</b>
       </button>
       <button id="imbali-ambiental" class="boton-mapa boton-vereda" style="display:none; top: 49%; left: 45%;" data-bs-toggle="modal" data-bs-target="#modalImbiliAmbiental">
-        <i class="bi bi-tree"></i> <b>Imbilí Ambiental</b>
+        <i class="ph ph-boat"></i> <b>Recorrido bote</b>
       </button>
+
       <button id="candelillas-social" class="boton-mapa boton-vereda" style="display:none; top: 40%; left: 57%;" data-bs-toggle="modal" data-bs-target="#modalCandelillasSocial">
-        <i class="bi bi-people-fill"></i> <b>Candelillas Social</b>
+        <i class="ph ph-users-three"></i> <b>Salón comunitario</b>
       </button>
       <button id="candelillas-economico" class="boton-mapa boton-vereda" style="display:none; top: 60%; left: 55%;" data-bs-toggle="modal" data-bs-target="#modalCandelillasEconomico">
-        <i class="bi bi-cash-coin"></i> <b>Candelillas Económico</b>
+        <i class="ph ph-anchor-simple"></i> <b>Muelle</b>
       </button>
-      <button id="candelillas-ambiental" class="boton-mapa boton-vereda" style="display:none; top: 49%; left: 45%;"  data-bs-toggle="modal" data-bs-target="#modalCandelillasAmbiental">
-        <i class="bi bi-tree"></i> <b>Candelillas Ambiental</b>
+      <button id="candelillas-ambiental" class="boton-mapa boton-vereda" style="display:none; top: 49%; left: 45%;" data-bs-toggle="modal" data-bs-target="#modalCandelillasAmbiental">
+        <i class="ph ph-wave-sine"></i> <b>Playa</b>
       </button>
 
       <button id="descolgadero-social" class="boton-mapa boton-vereda" style="display:none; top: 40%; left: 57%;" data-bs-toggle="modal" data-bs-target="#modalDescolgaderoSocial">
-        <i class="bi bi-people-fill"></i> <b>Descolgadero Social</b>
+        <i class="ph ph-anchor-simple"></i> <b>Muelle</b>
       </button>
       <button id="descolgadero-economico" class="boton-mapa boton-vereda" style="display:none; top: 60%; left: 55%;" data-bs-toggle="modal" data-bs-target="#modalDescolgaderoEconomico">
-        <i class="bi bi-cash-coin"></i> <b>Descolgadero Económico</b>
+        <i class="ph ph-factory"></i> <b>Sistema FV beneficio cacao</b>
       </button>
       <button id="descolgadero-ambiental" class="boton-mapa boton-vereda" style="display:none; top: 49%; left: 45%;" data-bs-toggle="modal" data-bs-target="#modalDescolgaderoAmbiental">
-        <i class="bi bi-tree"></i> <b>Descolgadero Ambiental</b>
+        <i class="ph ph-boat"></i> <b>Recorrido bote</b>
       </button>
     </div>
+
 
     <!-- Contenedor del mapa -->
     <div class="responsive-mapa" style="width: 100%; height: 100%;">
@@ -141,6 +143,33 @@
   </div>  
   {% block footer %} {% include 'layouts/footer.html' %} {% endblock %}
   {% block enlaces %} {% include 'layouts/enlaces.html' %} {% endblock %}
+  <script>
+    document.querySelectorAll('.accordion-button').forEach(button => {
+      button.addEventListener('click', function () {
+        const targetId = button.getAttribute('data-bs-target');
+        if (targetId) {
+          // Cambia el hash de la URL sin recargar la página
+          history.replaceState(null, null, targetId);
+        }
+      });
+    });
+
+    // Al cargar la página, abre la pestaña si hay hash en la URL
+    window.addEventListener('DOMContentLoaded', function () {
+      const hash = window.location.hash;
+      if (hash && document.querySelector(hash)) {
+        const collapseEl = document.querySelector(hash);
+        const bsCollapse = new bootstrap.Collapse(collapseEl, {
+          toggle: true
+        });
+
+        // Opcional: hacer scroll al acordeón
+        setTimeout(() => {
+          collapseEl.scrollIntoView({ behavior: 'smooth' });
+        }, 500);
+      }
+    });
+  </script>
 </body>
 </html>
 
@@ -148,11 +177,11 @@
 <!--  Determinante Social Imbili -->
 <div class="modal fade" id="modalImbiliSocial" tabindex="-1" aria-labelledby="modalImbiliSocialLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered">
-    <div class="modal-content" style="height: 40rem; background: #f3ce72;border-radius: 3rem;">      
-      <div class="titulo_absolute_modal"><i class="bi bi-people-fill"></i> <b>Determinante Social</b></div>
+    <div class="modal-content" style="position: relative; height: 40rem; background: #f3ce72;border-radius: 3rem;">      
+      <!--  <div class="titulo_absolute_modal"><i class="bi bi-people-fill"></i> <b>Determinante Social</b></div>-->
       <div class="modal-body" style="height: 500px; padding: 3rem;margin-bottom: 2rem;"> 
         <div class="w-100 text-end" style="text-align: end;margin-bottom: 0.5rem;"><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>        
-        <iframe class="youtube-iframe" width="100%" height="100%" src="https://www.youtube.com/embed/6tXzNBt_8Ok?si=HMMSVWk_MI4_K5Sl&enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe class="youtube-iframe" width="100%" height="100%" src="https://www.youtube.com/embed/6tXzNBt_8Ok?vq=hd1080&enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
       <div class="tulachito_absolute_modal"><img src="../../static/images/Tulachito.svg" alt="icono lista"></div>
     </div>
@@ -161,11 +190,11 @@
 <!--  Determinante Economico Imbili -->
 <div class="modal fade" id="modalImbiliEconomico" tabindex="-1" aria-labelledby="modalImbiliEconomicoLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered">
-    <div class="modal-content" style="height: 40rem; background: #f3ce72;border-radius: 3rem;">      
-      <div class="titulo_absolute_modal"><i class="bi bi-cash-coin"></i> <b>Determinante Económico</b></div>
+    <div class="modal-content" style="position: relative; height: 40rem; background: #f3ce72;border-radius: 3rem;">      
+      <!--  <div class="titulo_absolute_modal"><i class="bi bi-cash-coin"></i> <b>Determinante Económico</b></div>-->
       <div class="modal-body" style="height: 500px; padding: 3rem;margin-bottom: 2rem;"> 
         <div class="w-100 text-end" style="text-align: end;margin-bottom: 0.5rem;"><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>        
-        <iframe class="youtube-iframe" width="100%" height="100%" src="https://www.youtube.com/embed/pl-6ax4vudg?si=06lhIbfO-oifzHU8&enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe class="youtube-iframe" width="100%" height="100%" src="https://www.youtube.com/embed/pl-6ax4vudg?vq=hd1080&enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
       <div class="tulachito_absolute_modal"><img src="../../static/images/Tulachito.svg" alt="icono lista"></div>
     </div>
@@ -175,11 +204,11 @@
 <!--  Determinante Ambiental Imbili -->
 <div class="modal fade" id="modalImbiliAmbiental" tabindex="-1" aria-labelledby="modalImbiliAmbientalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered">
-    <div class="modal-content" style="height: 40rem; background: #f3ce72;border-radius: 3rem;">      
-      <div class="titulo_absolute_modal"><i class="bi bi-tree"></i> <b>Determinante Ambiental</b></div>
+    <div class="modal-content" style="position: relative; height: 40rem; background: #f3ce72;border-radius: 3rem;">      
+      <!--  <div class="titulo_absolute_modal"><i class="bi bi-tree"></i> <b>Determinante Ambiental</b></div>-->
       <div class="modal-body" style="height: 500px; padding: 3rem;margin-bottom: 2rem;"> 
         <div class="w-100 text-end" style="text-align: end;margin-bottom: 0.5rem;"><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>        
-        <iframe class="youtube-iframe" width="100%" height="100%" src="https://www.youtube.com/embed/V-k1BF8Q50Y?si=8Dt0MYf4iYqnRUZJ&enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe class="youtube-iframe" width="100%" height="100%" src="https://www.youtube.com/embed/V-k1BF8Q50Y?vq=hd1080&enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
       <div class="tulachito_absolute_modal"><img src="../../static/images/Tulachito.svg" alt="icono lista"></div>
     </div>
@@ -189,11 +218,11 @@
 <!--  Determinante Social Candelillas -->
 <div class="modal fade" id="modalCandelillasSocial" tabindex="-1" aria-labelledby="modalCandelillasSocialLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered">
-    <div class="modal-content" style="height: 40rem; background: #f3ce72;border-radius: 3rem;">      
-      <div class="titulo_absolute_modal"><i class="bi bi-people-fill"></i> <b>Determinante Social</b></div>
+    <div class="modal-content" style="position: relative; height: 40rem; background: #f3ce72;border-radius: 3rem;">      
+      <!--  <div class="titulo_absolute_modal"><i class="bi bi-people-fill"></i> <b>Determinante Social</b></div>-->
       <div class="modal-body" style="height: 500px; padding: 3rem;margin-bottom: 2rem;"> 
         <div class="w-100 text-end" style="text-align: end;margin-bottom: 0.5rem;"><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>        
-        <iframe class="youtube-iframe" width="100%" height="100%" src="https://www.youtube.com/embed/FHBl9NCEFy0?si=E7SqsvV7Hv2OSwn3&enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe class="youtube-iframe" width="100%" height="100%" src="https://www.youtube.com/embed/FHBl9NCEFy0?vq=hd1080&enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
       <div class="tulachito_absolute_modal"><img src="../../static/images/Tulachito.svg" alt="icono lista"></div>
     </div>
@@ -202,11 +231,11 @@
 <!--  Determinante Economico Candelillas -->
 <div class="modal fade" id="modalCandelillasEconomico" tabindex="-1" aria-labelledby="modalCandelillasEconomicoLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered">
-    <div class="modal-content" style="height: 40rem; background: #f3ce72;border-radius: 3rem;">      
-      <div class="titulo_absolute_modal"><i class="bi bi-cash-coin"></i> <b>Determinante Económico</b></div>
+    <div class="modal-content" style="position: relative; height: 40rem; background: #f3ce72;border-radius: 3rem;">      
+      <!--  <div class="titulo_absolute_modal"><i class="bi bi-cash-coin"></i> <b>Determinante Económico</b></div>-->
       <div class="modal-body" style="height: 500px; padding: 3rem;margin-bottom: 2rem;"> 
         <div class="w-100 text-end" style="text-align: end;margin-bottom: 0.5rem;"><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>        
-        <iframe class="youtube-iframe" width="100%" height="100%" src="https://www.youtube.com/embed/znoKC52WQic?si=OczpcBuCLfwJVGto&enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe class="youtube-iframe" width="100%" height="100%" src="https://www.youtube.com/embed/znoKC52WQic?vq=hd1080&enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
       <div class="tulachito_absolute_modal"><img src="../../static/images/Tulachito.svg" alt="icono lista"></div>
     </div>
@@ -215,11 +244,11 @@
 <!--  Determinante Ambiental Candelillas -->
 <div class="modal fade" id="modalCandelillasAmbiental" tabindex="-1" aria-labelledby="modalCandelillasAmbientalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered">
-    <div class="modal-content" style="height: 40rem; background: #f3ce72;border-radius: 3rem;">      
-      <div class="titulo_absolute_modal"><i class="bi bi-tree"></i> <b>Determinante Ambiental</b></div>
+    <div class="modal-content" style="position: relative; height: 40rem; background: #f3ce72;border-radius: 3rem;">      
+      <!--  <div class="titulo_absolute_modal"><i class="bi bi-tree"></i> <b>Determinante Ambiental</b></div>-->
       <div class="modal-body" style="height: 500px; padding: 3rem;margin-bottom: 2rem;"> 
         <div class="w-100 text-end" style="text-align: end;margin-bottom: 0.5rem;"><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>        
-        <iframe class="youtube-iframe" width="100%" height="100%" src="https://www.youtube.com/embed/a3Ta3L33Vvo?si=y4Qzo8VuYIwlGdE-&enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe class="youtube-iframe" width="100%" height="100%" src="https://www.youtube.com/embed/a3Ta3L33Vvo?vq=hd1080&enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
       <div class="tulachito_absolute_modal"><img src="../../static/images/Tulachito.svg" alt="icono lista"></div>
     </div>
@@ -229,11 +258,11 @@
 <!--  Determinante Social Descolgadero -->
 <div class="modal fade" id="modalDescolgaderoSocial" tabindex="-1" aria-labelledby="modalDescolgaderoSocialLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered">
-    <div class="modal-content" style="height: 40rem; background: #f3ce72;border-radius: 3rem;">      
-      <div class="titulo_absolute_modal"><i class="bi bi-people-fill"></i> <b>Determinante Social</b></div>
+    <div class="modal-content" style="position: relative; height: 40rem; background: #f3ce72;border-radius: 3rem;">      
+      <!--  <div class="titulo_absolute_modal"><i class="bi bi-people-fill"></i> <b>Determinante Social</b></div>-->
       <div class="modal-body" style="height: 500px; padding: 3rem;margin-bottom: 2rem;"> 
         <div class="w-100 text-end" style="text-align: end;margin-bottom: 0.5rem;"><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>        
-        <iframe class="youtube-iframe" width="100%" height="100%" src="https://www.youtube.com/embed/1xzJyegVYuw?si=H69pDDIdHBwvVhT3&enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe class="youtube-iframe" width="100%" height="100%" src="https://www.youtube.com/embed/1xzJyegVYuw?vq=hd1080&enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
       <div class="tulachito_absolute_modal"><img src="../../static/images/Tulachito.svg" alt="icono lista"></div>
     </div>
@@ -242,11 +271,11 @@
 <!--  Determinante Economico Descolgadero -->
 <div class="modal fade" id="modalDescolgaderoEconomico" tabindex="-1" aria-labelledby="modalDescolgaderoEconomicoLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered">
-    <div class="modal-content" style="height: 40rem; background: #f3ce72;border-radius: 3rem;">      
-      <div class="titulo_absolute_modal"><i class="bi bi-cash-coin"></i> <b>Determinante Económico</b></div>
+    <div class="modal-content" style="position: relative; height: 40rem; background: #f3ce72;border-radius: 3rem;">      
+      <!--  <div class="titulo_absolute_modal"><i class="bi bi-cash-coin"></i> <b>Determinante Económico</b></div>-->
       <div class="modal-body" style="height: 500px; padding: 3rem;margin-bottom: 2rem;"> 
         <div class="w-100 text-end" style="text-align: end;margin-bottom: 0.5rem;"><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>        
-        <iframe class="youtube-iframe" width="100%" height="100%" src="https://www.youtube.com/embed/gWtuy3OTrM8?si=yBWyTHIvIKWOxN8T&enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe class="youtube-iframe" width="100%" height="100%" src="https://www.youtube.com/embed/gWtuy3OTrM8?vq=hd1080&enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
       <div class="tulachito_absolute_modal"><img src="../../static/images/Tulachito.svg" alt="icono lista"></div>
     </div>
@@ -255,11 +284,11 @@
 <!--  Determinante Ambiental Descolgadero -->
 <div class="modal fade" id="modalDescolgaderoAmbiental" tabindex="-1" aria-labelledby="modalDescolgaderoAmbientalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered">
-    <div class="modal-content" style="height: 40rem; background: #f3ce72;border-radius: 3rem;">      
-      <div class="titulo_absolute_modal"><i class="bi bi-tree"></i> <b>Determinante Ambiental</b></div>
+    <div class="modal-content" style="position: relative; height: 40rem; background: #f3ce72;border-radius: 3rem;">      
+      <!--  <div class="titulo_absolute_modal"><i class="bi bi-tree"></i> <b>Determinante Ambiental</b></div>-->
       <div class="modal-body" style="height: 500px; padding: 3rem;margin-bottom: 2rem;"> 
         <div class="w-100 text-end" style="text-align: end;margin-bottom: 0.5rem;"><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>        
-        <iframe class="youtube-iframe" width="100%" height="100%" src="https://www.youtube.com/embed/d-1dvnsFGXo?si=eqPLw6XoHwaSC7xQ&enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe class="youtube-iframe" width="100%" height="100%" src="https://www.youtube.com/embed/d-1dvnsFGXo?vq=hd1080&enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       </div>
       <div class="tulachito_absolute_modal"><img src="../../static/images/Tulachito.svg" alt="icono lista"></div>
     </div>

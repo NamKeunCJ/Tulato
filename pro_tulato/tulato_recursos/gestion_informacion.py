@@ -40,7 +40,7 @@ def agregar_informacion():
                 municipio = request.form.get('municipio') or None
                 vereda = request.form.get('vereda') or None
                 determinante = request.form.get('determinante') or None
-                rol = request.form.get('rol') or None
+                roles = request.form.getlist('rol')
 
                 ruta_archivo = None
                 
@@ -57,19 +57,26 @@ def agregar_informacion():
                 if proyecto=="4" and (municipio is None or vereda is None or determinante is None):                    
                     return 'error'
 
-                print(f""" Título: {titulo} Coordenadas: {coordenadas} Archivo: {ruta_archivo} Descripción: {descripcion} Proyecto: {proyecto} Municipio: {municipio} Vereda: {vereda} Determinante: {determinante} Rol: {rol} """)
-                
                 # Insertar el nuevo usuario y devolver el id insertado
                 cur.execute("""
-                    INSERT INTO contenido (titulo, descripcion, coordenada, imagen, video, rol_id, usuario_id)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s) RETURNING contenido_id
-                """, (titulo,descripcion,coordenadas,ruta_archivo,video,rol,user_id))
+                    INSERT INTO contenido (titulo, descripcion, coordenada, imagen, video, usuario_id)
+                    VALUES (%s, %s, %s, %s, %s, %s) RETURNING contenido_id
+                """, (titulo,descripcion,coordenadas,ruta_archivo,video,user_id))
 
-                # Obtener el id del nuevo usuario
+                # Obtener el id de la nueva informacion
                 contenido_id = cur.fetchone()[0]
                 conn.commit()
 
-                # Insertar el nuevo usuario y devolver el id insertado
+                # Insertar el nuevo contenido_rol y devolver el id insertado
+                for rol_id in roles:
+                    cur.execute("""
+                        INSERT INTO contenido_rol (contenido_id, rol_id)
+                        VALUES (%s, %s)
+                    """, (contenido_id, rol_id))
+                conn.commit()
+
+
+                # Insertar el nuevo asociacion_contenido y devolver el id insertado
                 cur.execute("""
                     INSERT INTO asociacion_contenido (contenido_id, determinante_id, vereda_id, municipio_id, proyecto_id)
                     VALUES (%s, %s, %s, %s, %s)
@@ -121,7 +128,7 @@ def editar_informacion():
                 municipio = form.get('municipio') or None
                 vereda = form.get('vereda') or None
                 determinante = form.get('determinante') or None
-                rol = form.get('rol') or None
+                roles = form.getlist('rol')  # <-- Esto devuelve una lista de roles marcados
                 file = request.files.get('file')
                 status = form.get('status')
                 
@@ -144,10 +151,16 @@ def editar_informacion():
                     return 'error'
 
                 cur.execute("""UPDATE contenido 
-                               SET titulo = %s, descripcion = %s, coordenada = %s, video = %s, rol_id = %s
+                               SET titulo = %s, descripcion = %s, coordenada = %s, video = %s
                                WHERE contenido_id = %s""",
-                            (titulo, descripcion, coordenadas, video, rol, id_info))
+                            (titulo, descripcion, coordenadas, video, id_info))
+                
+                # Actualizar roles múltiples (checkboxes)
+                cur.execute("DELETE FROM contenido_rol WHERE contenido_id = %s", (id_info,))
+                for rol_id in roles:
+                    cur.execute("INSERT INTO contenido_rol (contenido_id, rol_id) VALUES (%s, %s)", (id_info, rol_id))
 
+                
                 cur.execute("""UPDATE asociacion_contenido 
                                SET determinante_id = %s, vereda_id = %s, municipio_id = %s, proyecto_id = %s
                                WHERE contenido_id = %s""",
@@ -162,18 +175,30 @@ def editar_informacion():
                 return 'success' 
 
             # --- GET: Renderizar datos ---
-            cur.execute("""SELECT c.contenido_id, c.created_at, c.titulo, p.nombre as proyecto, 
-                           m.nombre, v.nombre, d.tipo, r.tipo as receptor, u.correo as creador, c.status, 
-                           c.coordenada, c.imagen, c.video, c.descripcion, 
-                           p.proyecto_id, m.municipio_id, v.vereda_id, d.determinante_id, r.rol_id
-                           FROM asociacion_contenido ac
-                           LEFT JOIN contenido c ON c.contenido_id = ac.contenido_id
-                           LEFT JOIN usuario u ON u.usuario_id = c.usuario_id
-                           LEFT JOIN rol r ON r.rol_id = c.rol_id
-                           LEFT JOIN determinante d ON d.determinante_id = ac.determinante_id
-                           LEFT JOIN vereda v ON v.vereda_id = ac.vereda_id
-                           LEFT JOIN municipio m ON m.municipio_id = ac.municipio_id
-                           LEFT JOIN proyecto p ON p.proyecto_id = ac.proyecto_id""")
+            cur.execute("""SELECT 
+                    c.contenido_id, c.created_at, c.titulo, 
+                    p.nombre AS proyecto, m.nombre, v.nombre, d.tipo, 
+                    STRING_AGG(r.tipo, ', ') AS receptores,
+                    u.correo AS creador, c.status, c.coordenada, 
+                    c.imagen, c.video, c.descripcion, 
+                    p.proyecto_id, m.municipio_id, v.vereda_id, d.determinante_id,
+                    STRING_AGG(r.rol_id::text, ',') AS rol_ids
+                FROM asociacion_contenido ac
+                LEFT JOIN contenido c ON c.contenido_id = ac.contenido_id
+                LEFT JOIN usuario u ON u.usuario_id = c.usuario_id
+                LEFT JOIN contenido_rol cr ON cr.contenido_id = c.contenido_id
+                LEFT JOIN rol r ON r.rol_id = cr.rol_id
+                LEFT JOIN determinante d ON d.determinante_id = ac.determinante_id
+                LEFT JOIN vereda v ON v.vereda_id = ac.vereda_id
+                LEFT JOIN municipio m ON m.municipio_id = ac.municipio_id
+                LEFT JOIN proyecto p ON p.proyecto_id = ac.proyecto_id
+                GROUP BY 
+                    c.contenido_id, c.created_at, c.titulo, p.nombre, 
+                    m.nombre, v.nombre, d.tipo, u.correo, c.status, 
+                    c.coordenada, c.imagen, c.video, c.descripcion, 
+                    p.proyecto_id, m.municipio_id, v.vereda_id, d.determinante_id
+                ORDER BY c.created_at desc;
+            """)
             edit_info = cur.fetchall()
 
             # Cargar selects (todos en bloque)
@@ -231,7 +256,9 @@ def proyectos():
                 user=datos_usuario(user_id)                
                 cur.execute("""SELECT a.contenido_id FROM asociacion_contenido a 
                                 JOIN contenido c on c.contenido_id=a.contenido_id
-                                WHERE proyecto_id=%s and c.rol_id=%s and c.status=%s""", (num_pro,user_rol,True))
+                                JOIN contenido_rol cr on cr.contenido_id=c.contenido_id
+                                JOIN rol r on r.rol_id=cr.rol_id
+                                WHERE proyecto_id=%s and cr.rol_id=%s and c.status=%s""", (num_pro,user_rol,True))
                 contenido_id = cur.fetchall()
 
                 for contenido in contenido_id:
@@ -251,7 +278,8 @@ def proyectos():
                 p.nombre, m.nombre, v.nombre, d.tipo, c.video, c.contenido_id
                 FROM asociacion_contenido ac
                 left JOIN contenido c ON c.contenido_id = ac.contenido_id
-                left JOIN rol r ON r.rol_id = c.rol_id
+                left JOIN contenido_rol cr on cr.contenido_id=c.contenido_id
+                left JOIN rol r on r.rol_id=cr.rol_id
                 left JOIN determinante d ON d.determinante_id = ac.determinante_id
                 left JOIN vereda v ON v.vereda_id = ac.vereda_id
                 left JOIN municipio m ON m.municipio_id = ac.municipio_id
@@ -292,8 +320,9 @@ def descargar_info():
             cur.execute('''SELECT c.titulo, c.descripcion, c.coordenada, c.imagen, r.tipo, c.status,
                 p.nombre, m.nombre, v.nombre, d.tipo, c.video, c.contenido_id
                 FROM asociacion_contenido ac
-                LEFT JOIN contenido c ON c.contenido_id = ac.contenido_id
-                LEFT JOIN rol r ON r.rol_id = c.rol_id
+                left JOIN contenido c ON c.contenido_id = ac.contenido_id
+                left JOIN contenido_rol cr on cr.contenido_id=c.contenido_id
+                left JOIN rol r on r.rol_id=cr.rol_id
                 LEFT JOIN determinante d ON d.determinante_id = ac.determinante_id
                 LEFT JOIN vereda v ON v.vereda_id = ac.vereda_id
                 LEFT JOIN municipio m ON m.municipio_id = ac.municipio_id

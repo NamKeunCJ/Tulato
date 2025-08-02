@@ -250,7 +250,7 @@
 @media (max-width: 1024px)  {
     .tulachito_absolute_modal{
         position: absolute;
-        left: 55%;
+        left: 80% !important;
         top: 70%;
         border-radius: 5rem;
         width: 15rem;
@@ -261,4 +261,36 @@
         pointer-events: none;
     }    
                                                                                                      
+}
+/* Mejoras responsive para el modal y el iframe */
+@media (max-width: 768px) {
+  .modal-content {
+    height: auto !important;
+    border-radius: 2rem !important;
+  }
+
+  .modal-body {
+    height: auto !important;
+    padding: 1.5rem !important;
+    margin-bottom: 1rem !important;
+  }
+
+  .titulo_absolute_modal {
+    position: static !important;
+    width: 100% !important;
+    font-size: 1.4rem !important;
+    margin-bottom: 1rem;
+    background: #fff;
+  }
+
+  .tulachito_absolute_modal {
+    width: 47% !important;
+    left: 60% !important;
+  }
+
+  .youtube-iframe {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 16/9;
+  }
 }

@@ -18,10 +18,12 @@
                     "next": "Siguiente",
                     "previous": "Anterior"
                 }
-            }
+            },
+            "order": [[0, "desc"]]  // ← Corrección aquí
         });
     });
 </script>
+
 <body class="body-formulario2">
     <header id="main-hader">
         <div class="imagen-center">
@@ -249,16 +251,29 @@
 
                                                         </script>
                                                         <div class="mb-2">
-                                                            <label for="rol" class="form-label">Rol destinatario: </label>
-                                                            <select class="form-select" id="rol" name="rol" required>
-                                                                <option value="{{info[18]}}" selected hidden>{{info[7]}}</option>
-                                                                {% for rol in rol %}
-                                                                {% if rol[0] != 5 %}
-                                                                    <option value="{{rol[0]}}">{{rol[1]}}</option>
-                                                                {% endif %}
+                                                            <label class="form-label">Rol destinatario:</label>
+                                                            {% set rol_ids = info[18].split(',') if info[18] else [] %}
+                                                            <div class="form-check">
+                                                                {% for r in rol %}
+                                                                    {% if r[0] != 5 %}
+                                                                        <div class="form-check">
+                                                                            <input class="form-check-input"
+                                                                                type="checkbox"
+                                                                                name="rol"
+                                                                                id="rol_{{ r[0] }}"
+                                                                                value="{{ r[0] }}"
+                                                                                {% if r[0]|string in rol_ids %} checked {% endif %}>
+                                                                            <label class="form-check-label" for="rol_{{ r[0] }}">
+                                                                                {{ r[1] }}
+                                                                            </label>
+                                                                        </div>
+                                                                    {% endif %}
                                                                 {% endfor %}
-                                                            </select>
+                                                            </div>
                                                         </div>
+
+
+
                                                         {% if info[9] == false %}
                                                         <div class="mb-2 form-check">
                                                             <input type="checkbox" class="form-check-input" id="status" name="status">

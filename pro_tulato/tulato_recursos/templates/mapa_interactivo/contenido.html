@@ -55,7 +55,7 @@
             <!-- Encabezado -->
             <div class="px-4 py-3 bg-primary-green text-white border-bottom border-4" style="border-color: #EBAC06;">
                 <div class="row align-items-center">
-                    <div class="col-md-10 px-3 px-md-5 pt-4 pb-3">
+                    <div class="col-md-9 px-3 px-md-5 pt-4 pb-3">
                         <div class="d-flex align-items-center gap-3" style="color: #063F23;">
                             <div class="fs-2">
                             {% if info[9] == 'Social' %}
@@ -80,14 +80,22 @@
 
                     
                 {% if user %}
-                <div class="col-md-2 px-3 py-3 d-flex justify-content-md-end justify-content-start align-items-start">
-                    <a href="#"
-                    class="btn btn-download fw-bold d-flex align-items-center gap-2 descargar-btn"
-                    style="background-color: #EBAC06; color: #063F23;"
-                    data-id="{{ info[11] }}">
-                    <i class="bi bi-download"></i> Descargar
-                    </a>
-                </div>
+                    <div class="col-md-3 px-3 py-3 d-flex justify-content-md-end justify-content-start align-items-start">
+                        <!-- Botones: Descargar/ Ver solo este contenido -->
+                        <div class="btn-group rounded-pill overflow-hidden">
+                            <a href="#"
+                            class="btn btn-warning fw-semibold px-4 descargar-btn"
+                            data-id="{{ info[11] }}">
+                            <i class="bi bi-download"></i> Descargar
+                            </a>
+                            {% if info[9] == 'Social' or info[9] == 'Económico' or info[9] == 'Ambiental' %}
+                                <a href="/mapa_interactivo/tulato_inicio/{{ info[11] }}"
+                                class="btn btn-warning fw-semibold border-start px-4">
+                                <i class="bi bi-eye"></i> Ver solo este contenido
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
                 {% endif %}
                 </div>
             </div>

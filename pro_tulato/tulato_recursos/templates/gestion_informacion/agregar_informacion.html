@@ -14,7 +14,7 @@
           <div class="col-12">
             <div class="card shadow p-4 p-md-5 rounded-5 mx-auto card-formulario2" style="margin-top: 3rem;">
               <h4 class="text-center fw-bold mb-4">Agregar Información</h4>
-              <form id="informacion-form" method="POST" action="/gestion_informacion/agregar_informacion" enctype="multipart/form-data">
+              <form id="informacion-form" method="GET" action="/gestion_informacion/agregar_informacion" enctype="multipart/form-data">
                 <div class="row g-3">
                   <div class="col-12 col-md-6 col-lg-4">
                     <label for="titulo" class="form-label">¿Cuál es el título del tema? <b style="color:red">*</b></label>
@@ -87,16 +87,21 @@
                     </div>
 
                     <div class="mb-2">
-                      <label for="rol" class="form-label">Rol destinatario <b style="color:red">*</b></label>
-                      <select class="form-select" id="rol" name="rol" required>
-                        <option value="" selected disabled>Seleccione una opción</option>
+                      <label class="form-label">Rol destinatario <b style="color:red">*</b></label>
+                      <div class="form-check">
                         {% for rol in rol %}
                           {% if rol[0] != 5 %}
-                            <option value="{{rol[0]}}">{{rol[1]}}</option>
+                            <div class="form-check">
+                              <input class="form-check-input" type="checkbox" name="rol" id="rol_{{rol[0]}}" value="{{rol[0]}}" required>
+                              <label class="form-check-label" for="rol_{{rol[0]}}">
+                                {{rol[1]}}
+                              </label>
+                            </div>
                           {% endif %}
                         {% endfor %}
-                      </select>
+                      </div>
                     </div>
+
                   </div>                  
                 </div>
                 <div class="row justify-content-center mt-4">
