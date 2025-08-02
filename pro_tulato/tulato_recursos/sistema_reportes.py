@@ -88,15 +88,15 @@ def visualizacion_dashboardx():
             cur.execute('''select c.contenido_id, c.titulo, p.nombre, m.nombre, v.nombre, d.tipo, u.correo, r.tipo, g.tipo,
                 u.edad, ge.tipo, u.discapacidad, de.created_at, de.cantidad, c.status from descarga de
                 JOIN contenido c on de.contenido_id=c.contenido_id 
-				JOIN rol r on c.rol_id=r.rol_id 
-				JOIN usuario u on c.usuario_id=u.usuario_id 
+                JOIN usuario u on de.usuario_id=u.usuario_id 
+				LEFT JOIN rol r ON r.rol_id = u.rol_id				
 				JOIN genero g on u.genero_id=g.genero_id 
 				JOIN grupo_etnico ge on u.grupo_id=ge.grupo_id
 				JOIN asociacion_contenido ac on ac.contenido_id=c.contenido_id
 				left JOIN determinante d ON d.determinante_id = ac.determinante_id
 	            left JOIN vereda v ON v.vereda_id = ac.vereda_id
 	            left JOIN municipio m ON m.municipio_id = ac.municipio_id
-	            left JOIN proyecto p ON p.proyecto_id = ac.proyecto_id''')
+	            left JOIN proyecto p ON p.proyecto_id = ac.proyecto_id order by created_at desc''')
             seguimiento_descargas = cur.fetchall()
 
             #Comparativa de acierto y error por determinante

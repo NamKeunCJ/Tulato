@@ -301,7 +301,7 @@ def descargar_info():
         return redirect(url_for('index'))
 
     cantidad = 1
-
+    print("USUARIO",user_id)
     with get_db_connection() as conn:
         with conn.cursor() as cur:
             # Control de descargas
