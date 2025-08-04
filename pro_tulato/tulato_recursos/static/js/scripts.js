@@ -202,6 +202,8 @@ $(document).ready(function() {
                 success: function(response) {
                     if (response === 'success') {
                         $('#informacionContainer').html('<div class="alert alert-success">Se ha guardado la información de manera exitosa.</div>');
+                    }else if (response === 'exit') {
+                        $('#informacionContainer').html('<div class="alert alert-danger">Debe seleccionar al menos un rol destinatario antes de continuar.</div>');
                     }else{
                         $('#informacionContainer').html('<div class="alert alert-danger">Tipo de archivo no permitido. <br> Solo se permiten imágenes (.jpg, .jpeg, .png, .svg, .gif).</div>');
                     }

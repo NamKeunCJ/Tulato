@@ -140,13 +140,15 @@ document.querySelectorAll('.grafica-rendimiento').forEach(div => {
     const titulos = [
         div.dataset.tituloambiental,
         div.dataset.tituloeconomico,
-        div.dataset.titulosocial
+        div.dataset.titulosocial,
+        div.dataset.titulotecnico
     ];
 
     const aciertos = [ 
         parseFloat(div.dataset.aciertoambiental),
         parseFloat(div.dataset.aciertoeconomico),
-        parseFloat(div.dataset.aciertosocial)
+        parseFloat(div.dataset.aciertosocial),
+        parseFloat(div.dataset.aciertotecnico)
     ];
     console.log('Títulos:', titulos);
     console.log('Aciertos:', aciertos);

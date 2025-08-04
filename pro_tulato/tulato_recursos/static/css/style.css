@@ -287,6 +287,10 @@ a:hover {
     transform: scale(1.05);
 }
 
+.footer-carousel{
+    font-size: 0.85rem; 
+    height: 12rem;
+}
 @media (max-width: 767px) {
     .logo_inicial {
         max-width: 30rem;
@@ -353,6 +357,9 @@ a:hover {
     }
     .image-container {
         height: 300px;
+    }
+    .footer-carousel{
+        height: 25rem !important;
     }
 }
 

@@ -56,7 +56,10 @@ def agregar_informacion():
 
                 if proyecto=="4" and (municipio is None or vereda is None or determinante is None):                    
                     return 'error'
-
+                
+                elif not roles:
+                    return 'exit'
+                
                 # Insertar el nuevo usuario y devolver el id insertado
                 cur.execute("""
                     INSERT INTO contenido (titulo, descripcion, coordenada, imagen, video, usuario_id)
@@ -94,7 +97,7 @@ def agregar_informacion():
                 municipio = cur.fetchall()
                 cur.execute('SELECT m.municipio_id, m.nombre, v.vereda_id, v.nombre FROM vereda v join municipio m on m.municipio_id=v.municipio_id')
                 vereda = cur.fetchall()
-                cur.execute('SELECT determinante_id, tipo FROM determinante')
+                cur.execute('SELECT determinante_id, tipo FROM determinante WHERE determinante_id != 4')
                 determinante = cur.fetchall()
 
                 return render_template('/gestion_informacion/agregar_informacion.html',
@@ -155,10 +158,11 @@ def editar_informacion():
                                WHERE contenido_id = %s""",
                             (titulo, descripcion, coordenadas, video, id_info))
                 
-                # Actualizar roles múltiples (checkboxes)
-                cur.execute("DELETE FROM contenido_rol WHERE contenido_id = %s", (id_info,))
-                for rol_id in roles:
-                    cur.execute("INSERT INTO contenido_rol (contenido_id, rol_id) VALUES (%s, %s)", (id_info, rol_id))
+                if roles:
+                    # Actualizar roles múltiples (checkboxes)
+                    cur.execute("DELETE FROM contenido_rol WHERE contenido_id = %s", (id_info,))
+                    for rol_id in roles:
+                        cur.execute("INSERT INTO contenido_rol (contenido_id, rol_id) VALUES (%s, %s)", (id_info, rol_id))
 
                 
                 cur.execute("""UPDATE asociacion_contenido 
@@ -211,7 +215,7 @@ def editar_informacion():
             cur.execute('''SELECT m.municipio_id, m.nombre, v.vereda_id, v.nombre 
                            FROM vereda v JOIN municipio m ON m.municipio_id = v.municipio_id''')
             vereda = cur.fetchall()
-            cur.execute('SELECT determinante_id, tipo FROM determinante')
+            cur.execute('SELECT determinante_id, tipo FROM determinante WHERE determinante_id != 4')
             determinante = cur.fetchall()
 
     return render_template('/gestion_informacion/editar_informacion.html',

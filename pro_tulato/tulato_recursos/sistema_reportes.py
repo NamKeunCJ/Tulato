@@ -26,7 +26,8 @@ def visualizacion_dashboardx():
                 join asociacion_contenido ac on ac.contenido_id=c.contenido_id
                 join determinante d on d.determinante_id=ac.determinante_id
                 join vereda ve on ve.vereda_id=ac.vereda_id
-                group by d.determinante_id, ve.nombre''')
+                WHERE d.determinante_id != %s
+                group by d.determinante_id, ve.nombre ''',(4,))
             interaccion_determinante = cur.fetchall()
 
             #Interacción general
@@ -81,7 +82,7 @@ def visualizacion_dashboardx():
 	            left JOIN vereda v ON v.vereda_id = ac.vereda_id
 	            left JOIN municipio m ON m.municipio_id = ac.municipio_id
 	            left JOIN proyecto p ON p.proyecto_id = ac.proyecto_id
-				 where de.usuario_id=%s''',(user_id,))
+				WHERE d.determinante_id != %s and de.usuario_id=%s''',(4,user_id,))
             mis_descargas = cur.fetchall()
 
             #Seguimiento de Descargas de Información por Responsable
@@ -96,7 +97,8 @@ def visualizacion_dashboardx():
 				left JOIN determinante d ON d.determinante_id = ac.determinante_id
 	            left JOIN vereda v ON v.vereda_id = ac.vereda_id
 	            left JOIN municipio m ON m.municipio_id = ac.municipio_id
-	            left JOIN proyecto p ON p.proyecto_id = ac.proyecto_id order by created_at desc''')
+	            left JOIN proyecto p ON p.proyecto_id = ac.proyecto_id 
+                WHERE d.determinante_id != %s order by created_at desc''',(4,))
             seguimiento_descargas = cur.fetchall()
 
             #Comparativa de acierto y error por determinante

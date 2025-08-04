@@ -277,7 +277,8 @@ def visualizar_tests():
             if test_id :
                 menu_solo=6
                 # Buscar test disponible
-                cur.execute(""" SELECT t.test_id, t.nombre, t.descripcion FROM test t WHERE t.test_id = %s AND t.status = %s""", (test_id,True,))
+                cur.execute(""" SELECT t.test_id, t.nombre, t.descripcion, d.tipo FROM test t 
+                    join determinante d on d.determinante_id=t.determinante_id WHERE t.test_id = %s AND t.status = %s""", (test_id,True,))
                 # Obtener todos los test
                 h_test = cur.fetchone()
                 print(h_test)
@@ -298,7 +299,8 @@ def visualizar_tests():
                 return render_template('/evaluacion_aprendizaje/visualizar_tests.html', modulo=modulo, menu_solo=menu_solo, h_test=h_test, h_pregunta=h_pregunta, opciones=opciones,user=user, zip=zip)                
             else:  
                 # Buscar test disponible
-                cur.execute(""" select test_id, nombre from test where status=%s order by created_at desc""", (True,))
+                cur.execute(""" select t.test_id, t.nombre , d.tipo FROM test t 
+                    join determinante d on d.determinante_id=t.determinante_id where t.status=%s order by t.created_at desc""", (True,))
                 # Obtener todos los test
                 tests = cur.fetchall()
 

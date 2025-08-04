@@ -159,7 +159,7 @@
                 <div class="row g-3"> 
                     {% if user[3]== 'Administrador' or user[3]== 'Administrador Máximo' %}
                     <!-- Rendimiento test -->
-                    <div class="col-md-6 col-lg-6 col-12">
+                    <div class="col-md-12 col-lg-12 col-12">
                         <div class="card card-reporte h-100 card-body grafica-card">
                             <div class="card-body">
                                 <h5 class="card-title">Rendimiento test</h5>
@@ -168,15 +168,18 @@
                                     data-tituloambiental="{{ aci_err[0][0] }}"
                                     data-tituloeconomico="{{ aci_err[1][0] }}"  
                                     data-titulosocial="{{ aci_err[2][0] }}"
+                                    data-titulotecnico="{{ aci_err[3][0] }}"
                                     data-aciertoambiental="{{ aci_err[0][1] or 0 }}"
                                     data-aciertoeconomico="{{ aci_err[1][1] or 0 }}"
-                                    data-aciertosocial="{{ aci_err[2][1] or 0 }}">
+                                    data-aciertosocial="{{ aci_err[2][1] or 0 }}"
+                                    data-aciertotecnico="{{ aci_err[3][1] or 0 }}">
                                 </div> 
                                 <div class="grafica-meta">
                                     <strong>Determinantes:</strong><br>
                                     ▪ {{aci_err[0][0]}}: <strong>{{aci_err[0][1] or 0}}%</strong><br>
                                     ▪ {{aci_err[1][0]}}: <strong>{{aci_err[1][1] or 0}}%</strong><br>
-                                    ▪ {{aci_err[2][0]}}: <strong>{{aci_err[2][1] or 0}}%</strong>
+                                    ▪ {{aci_err[2][0]}}: <strong>{{aci_err[2][1] or 0}}%</strong><br>
+                                    ▪ {{aci_err[3][0]}}: <strong>{{aci_err[3][1] or 0}}%</strong>
                                 </div>    
                             </div>
                         </div>
