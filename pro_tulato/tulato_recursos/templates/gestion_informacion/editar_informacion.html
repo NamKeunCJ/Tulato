@@ -88,7 +88,7 @@
                                                     </div>
                                                     <div class="col-12">
                                                         <label for="coordenadas" class="form-label">Coordenadas</label>
-                                                        <input type="text" class="form-control" id="coordenadas" name="coordenadas" maxlength="100" value="{{info[10]}}" required>
+                                                        <input type="text" class="form-control" id="coordenadas" name="coordenadas" maxlength="100" value="{{ info[10] if info[10] is not none else '' }}" placeholder="{% if info[10] is none %}1.535401, -78.724399{% endif %}">
                                                     </div>
                                                     <div class="col-6 d-flex align-items-center justify-content-center">
                                                         <label for="file_{{ info[0] }}" class="custom-file-upload w-100">

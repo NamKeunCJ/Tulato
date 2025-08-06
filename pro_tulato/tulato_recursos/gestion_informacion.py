@@ -43,7 +43,13 @@ def agregar_informacion():
                 roles = request.form.getlist('rol')
 
                 ruta_archivo = None
-                
+
+                print("Coordenadas", coordenadas)
+
+                if not coordenadas or coordenadas.strip() == "":
+                    coordenadas = None
+
+
                 if file and file.filename != '':
                     if allowed_file(file.filename):
                         filename = secure_filename(file.filename)
@@ -137,7 +143,10 @@ def editar_informacion():
                 
                 ruta_archivo = None
 
+                print("Coordenadas", coordenadas)
 
+                if not coordenadas or coordenadas.strip() == "":
+                    coordenadas = None
 
                 if file and file.filename != '':
                     if allowed_file(file.filename):
@@ -288,7 +297,7 @@ def proyectos():
                 left JOIN vereda v ON v.vereda_id = ac.vereda_id
                 left JOIN municipio m ON m.municipio_id = ac.municipio_id
                 left JOIN proyecto p ON p.proyecto_id = ac.proyecto_id
-                WHERE p.proyecto_id= %s AND c.status=%s;''', (num_pro,True,))
+                WHERE p.proyecto_id= %s AND c.status=%s ORDER BY c.created_at DESC;''', (num_pro,True,))
             informacion = cur.fetchall()
 
     if user_id is not None:
